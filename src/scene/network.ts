@@ -149,7 +149,15 @@ export function routePolyline(net: Network, from: number, to: number): THREE.Vec
 
 /** Random walk polyline for ambient trails. */
 export function wanderPolyline(net: Network, hops: number): THREE.Vector3[] | null {
-  const start = Math.floor(Math.random() * net.nodes.length);
+  // Bias starts toward the center so the hero framing always has trails in it
+  let start = Math.floor(Math.random() * net.nodes.length);
+  const spanX = (COLS * CELL) / 2;
+  const spanZ = (ROWS * CELL) / 2;
+  for (let tries = 0; tries < 3; tries++) {
+    const p = net.nodes[start] as THREE.Vector3;
+    if (Math.abs(p.x) < spanX * 0.55 && Math.abs(p.z) < spanZ * 0.6) break;
+    start = Math.floor(Math.random() * net.nodes.length);
+  }
   if (!net.adjacency[start]!.length) return null;
   const pts: THREE.Vector3[] = [];
   let cur = start;

@@ -8,7 +8,6 @@ const TAIL = 14;
 
 export interface TrailPalette {
   amber: THREE.Color;
-  crimson: THREE.Color;
   cyan: THREE.Color;
 }
 

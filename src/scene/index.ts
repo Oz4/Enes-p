@@ -25,7 +25,7 @@ export function initScene(root: HTMLElement): void {
   root.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(new THREE.Color('#060608'), 90, 240);
+  scene.fog = new THREE.FogExp2(new THREE.Color('#060608'), 0.0105);
 
   // Camera rig: drift + mouse parallax (≤ ~2°) applied to the rig, not the camera
   const camera = new THREE.PerspectiveCamera(38, innerWidth / innerHeight, 1, 400);
@@ -37,7 +37,6 @@ export function initScene(root: HTMLElement): void {
 
   const palette: TrailPalette = {
     amber: cssColor('--trail-amber', '#ffb454'),
-    crimson: cssColor('--trail-crimson', '#ff3b5c'),
     cyan: cssColor('--neon-cyan', '#22d3ee'),
   };
   const violet = cssColor('--neon-violet', '#8b5cf6');
@@ -54,7 +53,7 @@ export function initScene(root: HTMLElement): void {
   scene.add(ground);
 
   const grid = new THREE.GridHelper(COLS * CELL * 1.5, Math.round(COLS * 1.5), violet, violet);
-  (grid.material as THREE.Material & { opacity: number }).opacity = 0.05;
+  (grid.material as THREE.Material & { opacity: number }).opacity = 0.06;
   (grid.material as THREE.Material).transparent = true;
   grid.position.y = -0.1;
   scene.add(grid);
@@ -62,7 +61,7 @@ export function initScene(root: HTMLElement): void {
   const roadGeo = new THREE.BufferGeometry().setFromPoints(net.roadSegments);
   const roads = new THREE.LineSegments(
     roadGeo,
-    new THREE.LineBasicMaterial({ color: violet, transparent: true, opacity: 0.16 }),
+    new THREE.LineBasicMaterial({ color: violet, transparent: true, opacity: 0.12 }),
   );
   roads.position.y = 0.05;
   scene.add(roads);
@@ -71,10 +70,20 @@ export function initScene(root: HTMLElement): void {
   const blockCount = isMobile ? 90 : 220;
   const blocks = new THREE.InstancedMesh(
     new THREE.BoxGeometry(1, 1, 1),
-    new THREE.MeshBasicMaterial({ color: new THREE.Color('#0b0b13') }),
+    new THREE.MeshBasicMaterial({ color: new THREE.Color('#0a0a10') }),
     blockCount,
   );
   const m = new THREE.Matrix4();
+  // One merged line buffer for every block's rim: dark volumes with thin
+  // emissive edges. Vertex colors make the top rectangle read brighter.
+  const edgePos: number[] = [];
+  const edgeCol: number[] = [];
+  const rimLo = violet.clone().multiplyScalar(0.45);
+  const rimHi = violet.clone();
+  const pushEdge = (ax: number, ay: number, az: number, bx: number, by: number, bz: number, c: THREE.Color) => {
+    edgePos.push(ax, ay, az, bx, by, bz);
+    edgeCol.push(c.r, c.g, c.b, c.r, c.g, c.b);
+  };
   for (let i = 0; i < blockCount; i++) {
     const cx = Math.random() * COLS * CELL - (COLS * CELL) / 2;
     const cz = Math.random() * ROWS * CELL - (ROWS * CELL) / 2;
@@ -84,15 +93,38 @@ export function initScene(root: HTMLElement): void {
     m.makeScale(w, h, d);
     m.setPosition(cx, h / 2 - 0.2, cz);
     blocks.setMatrixAt(i, m);
+    const x0 = cx - w / 2;
+    const x1 = cx + w / 2;
+    const z0 = cz - d / 2;
+    const z1 = cz + d / 2;
+    const yTop = h - 0.2;
+    // top rectangle — the lit rim
+    pushEdge(x0, yTop, z0, x1, yTop, z0, rimHi);
+    pushEdge(x1, yTop, z0, x1, yTop, z1, rimHi);
+    pushEdge(x1, yTop, z1, x0, yTop, z1, rimHi);
+    pushEdge(x0, yTop, z1, x0, yTop, z0, rimHi);
+    // vertical corners — dimmer
+    pushEdge(x0, -0.2, z0, x0, yTop, z0, rimLo);
+    pushEdge(x1, -0.2, z0, x1, yTop, z0, rimLo);
+    pushEdge(x1, -0.2, z1, x1, yTop, z1, rimLo);
+    pushEdge(x0, -0.2, z1, x0, yTop, z1, rimLo);
   }
   scene.add(blocks);
+  const rimGeo = new THREE.BufferGeometry();
+  rimGeo.setAttribute('position', new THREE.Float32BufferAttribute(edgePos, 3));
+  rimGeo.setAttribute('color', new THREE.Float32BufferAttribute(edgeCol, 3));
+  const rims = new THREE.LineSegments(
+    rimGeo,
+    new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.11 }),
+  );
+  scene.add(rims);
 
   // Depot markers: small glowing rings
   const depotGeo = new THREE.RingGeometry(1.1, 1.5, 32);
   const depotMat = new THREE.MeshBasicMaterial({
-    color: palette.cyan,
+    color: violet,
     transparent: true,
-    opacity: 0.35,
+    opacity: 0.28,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
     side: THREE.DoubleSide,
@@ -113,13 +145,11 @@ export function initScene(root: HTMLElement): void {
   function launchAmbient(): void {
     const poly = wanderPolyline(net, 6 + ((Math.random() * 8) | 0));
     if (!poly) return;
-    const roll = Math.random();
-    const color = roll < 0.8 ? palette.amber : roll < 0.92 ? palette.cyan : palette.crimson;
     trails.launch(poly, {
       speed: 9 + Math.random() * 10,
-      color,
-      intensity: 0.55 + Math.random() * 0.35,
-      headSize: 1 + Math.random() * 0.6,
+      color: palette.amber,
+      intensity: 0.7 + Math.random() * 0.4,
+      headSize: 1.1 + Math.random() * 0.6,
     });
   }
   for (let i = 0; i < ambientCount; i++) launchAmbient();

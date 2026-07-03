@@ -67,7 +67,7 @@ export class Dispatcher {
 
   private spawnPulse(at: THREE.Vector3): void {
     const mat = new THREE.MeshBasicMaterial({
-      color: this.palette.amber,
+      color: this.palette.cyan,
       transparent: true,
       opacity: 0.9,
       blending: THREE.AdditiveBlending,

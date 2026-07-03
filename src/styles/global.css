@@ -21,21 +21,6 @@ body {
   position: relative;
 }
 
-/* Subtle violet vignette pinning the page into the night */
-body::after {
-  background: radial-gradient(
-    ellipse 120% 90% at 50% 40%,
-    transparent 55%,
-    rgba(139, 92, 246, 0.05) 78%,
-    rgba(6, 6, 8, 0.55) 100%
-  );
-  content: '';
-  inset: 0;
-  pointer-events: none;
-  position: fixed;
-  z-index: 3;
-}
-
 /* Fine animated grain — ~3% opacity, steps() so it flickers not slides */
 body::before {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
