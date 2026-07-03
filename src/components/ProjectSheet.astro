@@ -221,7 +221,7 @@ const thumb = (id: string | undefined) =>
       var(--grad-edge) border-box;
     border: 1px solid transparent;
     border-bottom: none;
-    border-radius: 20px 20px 0 0;
+    border-radius: var(--radius); /* sharp top edge */
     bottom: 0;
     display: flex;
     flex-direction: column;
@@ -256,7 +256,7 @@ const thumb = (id: string | undefined) =>
 
   .grab-bar {
     background: var(--edge);
-    border-radius: 999px;
+    border-radius: var(--radius);
     height: 4px;
     width: 3rem;
   }
@@ -264,7 +264,7 @@ const thumb = (id: string | undefined) =>
   .close {
     background: var(--surface);
     border: 1px solid var(--edge);
-    border-radius: 50%;
+    border-radius: var(--radius);
     color: var(--ink-dim);
     cursor: pointer;
     font-size: var(--text-sm);
@@ -347,7 +347,7 @@ const thumb = (id: string | undefined) =>
   .case :global(.media-strip img),
   .sheet :global(.media-strip img) {
     border: 1px solid var(--edge);
-    border-radius: 8px;
+    border-radius: var(--radius);
     flex: 0 0 auto;
     height: 9.5rem;
     object-fit: cover;

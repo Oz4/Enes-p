@@ -153,7 +153,7 @@ video {
     linear-gradient(var(--surface), var(--surface)) padding-box,
     var(--grad-edge) border-box;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: var(--radius);
   color: var(--ink-dim);
   display: inline-block;
   font-family: var(--font-mono);
@@ -174,7 +174,7 @@ video {
 
 .btn {
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: var(--radius);
   display: inline-block;
   font-family: var(--font-body);
   font-size: var(--text-sm);

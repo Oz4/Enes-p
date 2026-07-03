@@ -57,5 +57,5 @@
 
   /* Layout */
   --content-width: 44rem;
-  --radius: 12px;
+  --radius: 0; /* sharp corners everywhere */
 }
