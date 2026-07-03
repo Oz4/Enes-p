@@ -237,6 +237,7 @@ video {
 
 .skip-link {
   background: var(--void);
+  text-decoration: none;
   border: 1px solid var(--edge);
   color: var(--ink);
   left: var(--space-3);
