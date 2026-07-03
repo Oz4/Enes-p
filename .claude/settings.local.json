@@ -14,7 +14,8 @@
       "Bash(curl -s -o /dev/null -w \"key-art %{http_code}\\\\n\" https://enes-portfolio-brown.vercel.app/media/hero-games-key-art.svg)",
       "Bash(python3 -)",
       "Bash(pkill -f \"astro dev\")",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4321/)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4321/)",
+      "Bash(python3 -c ' *)"
     ]
   }
 }

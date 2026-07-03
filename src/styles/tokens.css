@@ -60,12 +60,12 @@
      site stays dark monochrome + amber. Six fills, one per plate, ALL
      carrying white text. Green/orange darkened from the art-direction
      picks (#0E9F5B, #EA580C) to hold ≥4.5:1 against white. */
-  --plate-violet: #6d28d9;
-  --plate-magenta: #db1777;
-  --plate-green: #0b7a46;
-  --plate-cobalt: #1d4ed8;
-  --plate-orange: #c2410c;
-  --plate-teal: #0f766e;
+  --plate-violet: #7925ff;
+  --plate-magenta: #ff017c;
+  --plate-green: #00ff88;
+  --plate-cobalt: #1654ff;
+  --plate-orange: #ff7e4a;
+  --plate-teal: #ffff00;
 
   /* Layout */
   --content-width: 44rem;

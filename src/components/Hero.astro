@@ -13,8 +13,12 @@ const chips = [
   <div class="container">
     <p class="role">{SITE.role}</p>
     <h1 class="name">
-      Enes Sahin
-      <span class="name-sweep" aria-hidden="true">Enes Sahin</span>
+      <span class="sr-only">Enes Sahin</span>
+      <svg class="neon" id="neon-name" viewBox="0 0 640 104" aria-hidden="true">
+        <text class="glow" x="2" y="82">{'Enes Sahin'}</text>
+        <text class="base" x="2" y="82"><tspan>E</tspan><tspan>n</tspan><tspan>e</tspan><tspan>s</tspan><tspan>{' '}</tspan><tspan>S</tspan><tspan>a</tspan><tspan>h</tspan><tspan>i</tspan><tspan>n</tspan></text>
+        <text class="spark" x="2" y="82">{'Enes Sahin'}</text>
+      </svg>
     </h1>
     <p class="tagline">I build game systems that ship and scale.</p>
     <ul class="chip-row" aria-label="Highlights">
@@ -39,10 +43,33 @@ const chips = [
 </section>
 
 <script>
-  // The sweep itself is pure CSS (7s loop with a long dwell). This only
-  // makes reduced-motion explicit during testing.
+  // Neon-sign glitch accent: every 10–15s ONE random letter dips to 40%
+  // for ~120ms — never during the spark trip. Everything else (power-on,
+  // breathing glow, spark) is pure CSS. Opacity-only, no layout work.
+  const SPARK_PERIOD = 6000; // must match the neon-spark animation
+  const SPARK_WINDOW = 1400; // spark trip + safety margin
+
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    console.info('[hero] name sweep disabled: prefers-reduced-motion is active');
+    console.info('[hero] neon flicker/spark disabled: prefers-reduced-motion is active');
+  } else {
+    const letters = [...document.querySelectorAll<SVGTSpanElement>('#neon-name .base tspan')].filter(
+      (t) => (t.textContent ?? '').trim().length > 0,
+    );
+    const t0 = performance.now(); // CSS animations start ≈ now
+    const glitch = () => {
+      const phase = (performance.now() - t0) % SPARK_PERIOD;
+      if (phase > SPARK_WINDOW && letters.length) {
+        const letter = letters[Math.floor(Math.random() * letters.length)];
+        if (letter) {
+          letter.style.opacity = '0.4';
+          setTimeout(() => {
+            letter.style.opacity = '';
+          }, 120);
+        }
+      }
+      setTimeout(glitch, 10000 + Math.random() * 5000);
+    };
+    setTimeout(glitch, 10000 + Math.random() * 5000);
   }
 </script>
 
@@ -92,51 +119,87 @@ const chips = [
     text-transform: uppercase;
   }
 
-  /* Two stacked layers: the base h1 paints solid white and never changes;
-     the aria-hidden duplicate on top carries ONLY a feathered amber band
-     clipped to the glyphs (everything else transparent), so the sweep reads
-     as warm light passing over white letters. */
+  /* --- Neon sign: three SVG text layers. Letters never move, never
+     change hue — all motion is light (opacity/filter only). --- */
   .name {
-    color: var(--ink);
-    font-size: clamp(var(--text-2xl), 8vw, 4.5rem);
+    margin-bottom: var(--space-3);
+  }
+
+  .sr-only {
+    clip: rect(0 0 0 0);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .neon {
+    display: block;
+    height: auto;
+    overflow: visible;
+    width: min(100%, 35rem);
+    /* power-on: 2-3 irregular stutters within 0.9s, once per visit.
+       Under reduced motion this collapses to its final steady frame. */
+    animation: neon-power 0.9s linear 1 backwards;
+  }
+
+  .neon text {
+    font-family: var(--font-display);
+    font-size: 84px;
+    font-stretch: expanded;
     font-weight: 900;
     letter-spacing: -0.01em;
-    margin-bottom: var(--space-3);
-    position: relative;
   }
 
-  .name-sweep {
-    /* band ≈ 8% of the 300% gradient ≈ 20% of the text width, feathered */
-    background: linear-gradient(
-        105deg,
-        transparent 46%,
-        color-mix(in srgb, var(--trail-amber) 85%, transparent) 50%,
-        transparent 54%
-      )
-      10% 0 / 300% 100% no-repeat;
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    -webkit-text-fill-color: transparent;
-    inset: 0;
-    pointer-events: none;
-    position: absolute;
-    /* 7s period: the band crosses in the first ~1.2s, then dwells parked
-       off-glyph. Killed by the global reduced-motion rule. */
-    animation: name-sweep 7s infinite;
+  .neon .base {
+    fill: rgba(255, 255, 255, 0.92);
   }
 
-  @keyframes name-sweep {
-    0% {
-      animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 0.95);
-      background-position: 10% 0;
-    }
-    17.15% {
-      background-position: 90% 0;
-    }
-    100% {
-      background-position: 90% 0;
-    }
+  /* tube glow: blurred warm copy breathing ±6% */
+  .neon .glow {
+    fill: color-mix(in srgb, var(--trail-amber) 55%, rgba(255, 255, 255, 0.92));
+    filter: blur(14px);
+    animation: neon-breathe 4s ease-in-out infinite;
+  }
+
+  /* outline spark: a short bright dash travels the letter paths once per
+     6s cycle (~1s per trip), invisible while parked */
+  .neon .spark {
+    fill: none;
+    stroke: color-mix(in srgb, var(--trail-amber) 65%, rgba(255, 255, 255, 1));
+    stroke-dasharray: 60 560;
+    stroke-width: 2.4;
+    opacity: 0;
+    animation: neon-spark 6s linear infinite;
+  }
+
+  @keyframes neon-power {
+    0% { opacity: 0; }
+    8% { opacity: 0; }
+    8.1% { opacity: 1; }
+    16% { opacity: 1; }
+    16.1% { opacity: 0.2; }
+    24% { opacity: 0.2; }
+    24.1% { opacity: 1; }
+    34% { opacity: 1; }
+    34.1% { opacity: 0.45; }
+    42% { opacity: 0.45; }
+    42.1% { opacity: 1; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes neon-breathe {
+    0% { opacity: 0.72; }
+    50% { opacity: 0.81; }
+    100% { opacity: 0.72; }
+  }
+
+  @keyframes neon-spark {
+    0% { stroke-dashoffset: 0; opacity: 1; }
+    16.6% { stroke-dashoffset: -620; opacity: 1; }
+    16.7% { stroke-dashoffset: -620; opacity: 0; }
+    100% { stroke-dashoffset: -620; opacity: 0; }
   }
 
   .tagline {
