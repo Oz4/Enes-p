@@ -8,12 +8,15 @@ import SkillsMap from '../components/SkillsMap.astro';
 import QuestLog from '../components/QuestLog.astro';
 import Achievements from '../components/Achievements.astro';
 import Contact from '../components/Contact.astro';
+import SimCanvas from '../components/SimCanvas.astro';
+import ProfilerBar from '../components/ProfilerBar.astro';
 ---
 
 <Base
   title="Enes Sahin — Senior Unity Engineer"
   description="Senior Unity Engineer — systems, multiplayer, VR. From a 400K-player game built at university to a solo-shipped open-world simulator on Steam."
 >
+  <SimCanvas />
   <Nav />
   <main id="main">
     <Hero />
@@ -29,12 +32,18 @@ import Contact from '../components/Contact.astro';
       <p>© 2026 Enes Sahin · Ankara, TR</p>
     </div>
   </footer>
+  <ProfilerBar />
 </Base>
+
+<script>
+  import '../scripts/reveal';
+</script>
 
 <style>
   footer {
     border-top: 1px solid var(--chunk-line);
-    padding-block: var(--space-4);
+    /* keep clear of the fixed profiler bar */
+    padding-block: var(--space-4) var(--space-6);
   }
 
   footer p {

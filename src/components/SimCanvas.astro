@@ -1,0 +1,32 @@
+---
+// Ambient simulation island. Pure decoration: aria-hidden, hydrates after
+// idle, and the document never depends on it (CLAUDE.md rule 1).
+---
+
+<canvas id="sim-canvas" aria-hidden="true"></canvas>
+
+<script>
+  import { initSim } from '../sim/engine';
+
+  const start = () => {
+    const canvas = document.getElementById('sim-canvas');
+    if (canvas instanceof HTMLCanvasElement) initSim(canvas);
+  };
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(start, { timeout: 2000 });
+  } else {
+    setTimeout(start, 300);
+  }
+</script>
+
+<style>
+  canvas {
+    height: 100vh;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: fixed;
+    width: 100vw;
+    z-index: -1;
+  }
+</style>

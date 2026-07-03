@@ -1,0 +1,72 @@
+---
+// Live profiler strip (PLAN.md §1, signature element). Hidden until the sim
+// initializes it — with JS off it simply never appears.
+---
+
+<div class="profiler" id="profiler" hidden>
+  <span id="profiler-text" aria-hidden="true">…</span>
+  <button id="profiler-toggle" aria-expanded="true">hide</button>
+</div>
+
+<script>
+  const bar = document.getElementById('profiler');
+  const toggle = document.getElementById('profiler-toggle');
+  toggle?.addEventListener('click', () => {
+    const collapsed = bar?.classList.toggle('collapsed') ?? false;
+    toggle.textContent = collapsed ? 'profiler' : 'hide';
+    toggle.setAttribute('aria-expanded', String(!collapsed));
+  });
+</script>
+
+<style>
+  .profiler {
+    align-items: center;
+    background: color-mix(in srgb, var(--asphalt) 88%, transparent);
+    border-top: 1px solid var(--chunk-line);
+    bottom: 0;
+    color: var(--telemetry);
+    display: flex;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    gap: var(--space-3);
+    justify-content: space-between;
+    left: 0;
+    padding: 4px var(--space-3) calc(4px + env(safe-area-inset-bottom));
+    position: fixed;
+    right: 0;
+    z-index: 20;
+  }
+
+  .profiler.collapsed {
+    background: transparent;
+    border-top-color: transparent;
+    justify-content: flex-end;
+    pointer-events: none;
+  }
+
+  .profiler.collapsed span {
+    display: none;
+  }
+
+  span {
+    letter-spacing: 0.04em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: var(--ink-dim);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 2px 4px;
+    pointer-events: auto;
+  }
+
+  button:hover {
+    color: var(--ink);
+  }
+</style>

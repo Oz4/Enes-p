@@ -6,7 +6,8 @@
       "Bash(curl -s -o /dev/null -w \"home: %{http_code} \\(%{size_download}b\\)\\\\n\" https://enes-portfolio-brown.vercel.app)",
       "Bash(curl -s -o /dev/null -w \"case study: %{http_code}\\\\n\" https://enes-portfolio-brown.vercel.app/projects/cargo-simulator/)",
       "Bash(git add *)",
-      "Bash(git commit -q -m ' *)"
+      "Bash(git commit -q -m ' *)",
+      "Bash(\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --headless=new --disable-gpu --screenshot=public/og-image.png --window-size=1200,630 --hide-scrollbars \"http://localhost:4321/og-card\")"
     ]
   }
 }

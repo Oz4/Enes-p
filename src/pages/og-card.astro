@@ -1,0 +1,83 @@
+---
+// 1200x630 source frame for public/og-image.png — screenshot with headless
+// Chrome at that viewport. Not linked from anywhere; noindex.
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/tokens.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>OG card</title>
+  </head>
+  <body>
+    <div class="card">
+      <p class="role">SENIOR UNITY ENGINEER — SYSTEMS · MULTIPLAYER · VR</p>
+      <h1>Enes Sahin</h1>
+      <p class="chips">Shipped on Steam · 400K+ players served · VR multiplayer · 10+ yrs</p>
+      <p class="bar">FPS 60 · agents 14 · chunks 9/24 loaded</p>
+    </div>
+  </body>
+</html>
+
+<style>
+  body {
+    margin: 0;
+  }
+
+  .card {
+    background:
+      linear-gradient(var(--chunk-line) 1px, transparent 1px) 0 0 / 60px 60px,
+      linear-gradient(90deg, var(--chunk-line) 1px, transparent 1px) 0 0 / 60px 60px,
+      var(--asphalt);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: 630px;
+    justify-content: center;
+    padding: 0 80px;
+    position: relative;
+    width: 1200px;
+  }
+
+  .role {
+    color: var(--signal);
+    font-family: var(--font-mono);
+    font-size: 24px;
+    letter-spacing: 0.05em;
+    margin: 0 0 24px;
+  }
+
+  h1 {
+    color: var(--ink);
+    font-family: 'Archivo Variable', sans-serif;
+    font-stretch: expanded;
+    font-size: 120px;
+    font-weight: 900;
+    line-height: 1;
+    margin: 0 0 32px;
+  }
+
+  .chips {
+    color: var(--ink-dim);
+    font-family: var(--font-mono);
+    font-size: 26px;
+    margin: 0;
+  }
+
+  .bar {
+    border-top: 1px solid var(--chunk-line);
+    bottom: 0;
+    color: var(--telemetry);
+    font-family: var(--font-mono);
+    font-size: 20px;
+    left: 0;
+    margin: 0;
+    padding: 18px 80px;
+    position: absolute;
+    right: 0;
+  }
+</style>

@@ -14,7 +14,7 @@ const projects = [
     blurb:
       'VR multiplayer physics and combat systems. Custom joint and constraint handling that eliminated latency-induced jitter on handheld objects over the network.',
     chips: ['Unity', 'VR', 'Multiplayer'],
-    href: null,
+    href: '/projects/highstreet/',
   },
   {
     title: 'HG Idle Arcade Framework + HG Builder',
@@ -22,7 +22,7 @@ const projects = [
     blurb:
       'One framework flexible enough to ship 10+ different mobile titles, plus build-automation tooling that saved the team 2+ hours every day.',
     chips: ['Unity', 'C#', 'CI/CD'],
-    href: null,
+    href: '/projects/hero-games/',
   },
   {
     title: 'Idle Town',
@@ -30,13 +30,13 @@ const projects = [
     blurb:
       'Asynchronous multiplayer Telegram game serving 400K registered users and 1K concurrent — on PHP, MySQL, cron jobs, and webhooks.',
     chips: ['PHP', 'MySQL', 'Webhooks'],
-    href: null,
+    href: '/projects/idle-town/',
   },
 ];
 ---
 
 <section class="section" id="projects">
-  <div class="container">
+  <div class="container reveal">
     <h2 class="section-title"><span class="index">01 /</span> Featured projects</h2>
     <div class="grid">
       {
@@ -85,6 +85,14 @@ const projects = [
     flex-direction: column;
     gap: var(--space-2);
     padding: var(--space-4);
+    transition:
+      border-color 0.15s ease-out,
+      transform 0.15s ease-out;
+  }
+
+  .card:hover {
+    border-color: var(--signal);
+    transform: translateY(-2px);
   }
 
   h3 {

@@ -47,6 +47,7 @@ const chips = [
 
   /* Static world-grid background — the sim replaces this in Phase 2 */
   .hero::before {
+    animation: grid-in 0.9s ease-out;
     background-image:
       linear-gradient(var(--chunk-line) 1px, transparent 1px),
       linear-gradient(90deg, var(--chunk-line) 1px, transparent 1px);
@@ -56,6 +57,56 @@ const chips = [
     mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 75%);
     opacity: 0.35;
     position: absolute;
+    transition: opacity 0.8s;
+  }
+
+  /* Once the canvas sim owns the background, retire the static grid. */
+  :global(html.sim-on) .hero::before {
+    opacity: 0;
+  }
+
+  @keyframes grid-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  /* Page-load moment: one orchestrated stagger, ≤ 1.2s total.
+     prefers-reduced-motion collapses all of it via global.css. */
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+
+  .role,
+  h1,
+  .positioning,
+  .chip-row,
+  .ctas,
+  .scroll-cue {
+    animation: rise 0.45s ease-out backwards;
+  }
+
+  h1 {
+    animation-delay: 0.08s;
+  }
+
+  .positioning {
+    animation-delay: 0.18s;
+  }
+
+  .chip-row {
+    animation-delay: 0.28s;
+  }
+
+  .ctas {
+    animation-delay: 0.38s;
+  }
+
+  .scroll-cue {
+    animation-delay: 0.55s;
   }
 
   .container {

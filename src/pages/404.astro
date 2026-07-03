@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+---
+
+<Base
+  title="404 — Enes Sahin"
+  description="Page not found."
+>
+  <Nav />
+  <main id="main">
+    <div class="container">
+      <p class="code">404</p>
+      <h1>Delivery agent lost</h1>
+      <p class="log">
+        agent #7 status: <span class="state">NO_ROUTE</span> — the requested node is not in any
+        loaded chunk.
+      </p>
+      <a class="btn btn-primary" href="/">Return to depot</a>
+    </div>
+  </main>
+</Base>
+
+<style>
+  main {
+    align-items: center;
+    display: flex;
+    min-height: 70dvh;
+  }
+
+  .code {
+    color: var(--signal);
+    font-family: var(--font-mono);
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-2);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .log {
+    color: var(--ink-dim);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    margin-bottom: var(--space-4);
+  }
+
+  .state {
+    color: var(--signal);
+  }
+</style>
