@@ -137,8 +137,10 @@ export function initScene(root: HTMLElement): void {
   }
 
   // --- Trails ---
+  // Pool sized for ambient traffic + ~40 dispatch streaks; the dispatcher
+  // recycles the oldest when rapid clicking exhausts it.
   const ambientCount = isMobile ? 10 : 22;
-  const trails = new TrailSystem(ambientCount + 5);
+  const trails = new TrailSystem(ambientCount + 40);
   scene.add(trails.points);
   const dispatcher = new Dispatcher(scene, net, trails, palette);
 

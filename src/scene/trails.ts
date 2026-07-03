@@ -23,6 +23,8 @@ interface Trail {
   history: THREE.Vector3[];
   active: boolean;
   onArrive: (() => void) | null;
+  /** launch order — lets the pool recycle the oldest when exhausted */
+  seq: number;
 }
 
 export class TrailSystem {
@@ -94,11 +96,18 @@ export class TrailSystem {
         history: Array.from({ length: TAIL }, () => new THREE.Vector3(0, -50, 0)),
         active: false,
         onArrive: null,
+        seq: 0,
       });
     }
   }
 
-  /** Returns false when no slot is free. */
+  private seqCounter = 0;
+
+  /**
+   * Returns false when no slot is free — unless `steal` is set, in which
+   * case the oldest active trail is recycled (its arrival callback is
+   * dropped). Never allocates.
+   */
   launch(
     path: THREE.Vector3[],
     opts: {
@@ -107,9 +116,16 @@ export class TrailSystem {
       intensity?: number;
       headSize?: number;
       onArrive?: () => void;
+      steal?: boolean;
     },
   ): boolean {
-    const trail = this.trails.find((t) => !t.active);
+    let trail = this.trails.find((t) => !t.active);
+    if (!trail && opts.steal) {
+      for (const t of this.trails) {
+        if (!trail || t.seq < trail.seq) trail = t;
+      }
+      if (trail) trail.onArrive = null;
+    }
     if (!trail || path.length < 2) return false;
     trail.path = path;
     trail.lengths = [];
@@ -127,6 +143,7 @@ export class TrailSystem {
     trail.onArrive = opts.onArrive ?? null;
     const start = path[0] as THREE.Vector3;
     for (const h of trail.history) h.copy(start).setY(0.5);
+    trail.seq = ++this.seqCounter;
     trail.active = true;
     return true;
   }
