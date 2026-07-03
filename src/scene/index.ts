@@ -132,6 +132,15 @@ export function initScene(root: HTMLElement): void {
     });
   }
 
+  // --- Scrim coupling: the page dims the scene on scroll; the scene sheds
+  // work while hidden and only accepts dispatch clicks over the hero. ---
+  let scrimO = parseFloat(
+    getComputedStyle(document.documentElement).getPropertyValue('--scrim-o'),
+  ) || 0;
+  window.addEventListener('scrimchange', (e) => {
+    scrimO = (e as CustomEvent<number>).detail;
+  });
+
   // --- Interaction ---
   const raycaster = new THREE.Raycaster();
   const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
@@ -139,6 +148,9 @@ export function initScene(root: HTMLElement): void {
   const hit = new THREE.Vector3();
 
   window.addEventListener('pointerdown', (e) => {
+    // Dispatch is a hero-moment interaction: once the scrim is up, background
+    // clicks belong to the document, not the scene.
+    if (scrimO >= 0.2) return;
     // Never steal clicks meant for real UI
     const el = e.target instanceof Element ? e.target : null;
     if (el?.closest('a, button, input, textarea, select, video, iframe, [role="dialog"], nav, summary')) {
@@ -186,12 +198,16 @@ export function initScene(root: HTMLElement): void {
     rig.rotation.y += (mx * 0.035 + Math.sin(t * 0.05) * 0.02 - rig.rotation.y) * 0.04;
     rig.rotation.x += (-my * 0.02 + Math.cos(t * 0.04) * 0.012 - rig.rotation.x) * 0.04;
 
-    // keep the network busy
-    if (trails.activeCount() < ambientCount && Math.random() < 0.06) launchAmbient();
+    // keep the network busy — at half tempo (and no bloom) while the scrim
+    // has the scene mostly hidden
+    const dimmed = scrimO >= 0.75;
+    if (trails.activeCount() < ambientCount && Math.random() < (dimmed ? 0.03 : 0.06)) {
+      launchAmbient();
+    }
 
     trails.update(dt);
     dispatcher.update(dt);
-    if (post) post.render();
+    if (post && !dimmed) post.render();
     else renderer.render(scene, camera);
 
     fps += (1 / Math.max(dt, 0.001) - fps) * 0.05;

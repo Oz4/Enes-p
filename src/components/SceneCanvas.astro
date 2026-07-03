@@ -1,11 +1,16 @@
 ---
 // "Night Delivery Network" WebGL scene container. The static gradient poster
 // below is the no-JS / reduced-motion / no-WebGL fallback; the three.js scene
-// lazy-loads on idle and fades in over it. Pure decoration — aria-hidden,
-// never gates content.
+// lazy-loads on first interaction and fades in over it. Pure decoration —
+// aria-hidden, never gates content.
+//
+// The scrim sits between the scene and the page: transparent over the hero,
+// easing to ~0.8 after one viewport of scroll so the city recedes to a faint
+// pulse behind the document, and settling back to ~0.5 behind Contact.
 ---
 
 <div class="scene" id="scene-root" aria-hidden="true"></div>
+<div class="scene-scrim" aria-hidden="true"></div>
 
 <script>
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -37,6 +42,48 @@
   const TRIGGERS = ['pointermove', 'pointerdown', 'touchstart', 'keydown', 'scroll'] as const;
   for (const evt of TRIGGERS) window.addEventListener(evt, start, { passive: true });
   setTimeout(start, 6000);
+
+  // --- scroll-linked scrim -------------------------------------------------
+  // Drives --scrim-o (read by the scrim layer's CSS) and broadcasts the value
+  // so the scene can shed work while it's dimmed. Scroll-linked values are
+  // instantaneous — no tween, so reduced-motion needs no special casing and
+  // there is nothing to jank.
+  const smooth = (t: number) => t * t * (3 - 2 * t);
+  const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
+  let lastSent = -1;
+
+  function applyScrim(): void {
+    const vh = window.innerHeight || 1;
+    let v = smooth(clamp01(window.scrollY / vh)) * 0.8;
+    // closing beat: the network resurfaces behind the final CTA
+    const contact = document.getElementById('contact');
+    if (contact && v > 0.5) {
+      const r = contact.getBoundingClientRect();
+      const visible = clamp01((vh - Math.max(r.top, 0)) / Math.min(vh, r.height || 1));
+      v += (0.5 - v) * smooth(visible);
+    }
+    const rounded = Math.round(v * 200) / 200;
+    if (rounded === lastSent) return;
+    lastSent = rounded;
+    document.documentElement.style.setProperty('--scrim-o', String(rounded));
+    window.dispatchEvent(new CustomEvent('scrimchange', { detail: rounded }));
+  }
+
+  let scrimPending = false;
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (scrimPending) return;
+      scrimPending = true;
+      requestAnimationFrame(() => {
+        scrimPending = false;
+        applyScrim();
+      });
+    },
+    { passive: true },
+  );
+  window.addEventListener('resize', applyScrim, { passive: true });
+  applyScrim();
 </script>
 
 <style>
@@ -52,6 +99,16 @@
       radial-gradient(ellipse 50% 38% at 74% 60%, rgba(34, 211, 238, 0.07), transparent 70%),
       radial-gradient(ellipse 40% 30% at 55% 85%, rgba(255, 180, 84, 0.05), transparent 70%),
       var(--void);
+  }
+
+  /* Between scene and content: same fixed z-level, later in DOM = on top */
+  .scene-scrim {
+    background: var(--void);
+    inset: 0;
+    opacity: var(--scrim-o, 0);
+    pointer-events: none;
+    position: fixed;
+    z-index: -1;
   }
 
   .scene :global(canvas) {
