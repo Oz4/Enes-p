@@ -1,0 +1,156 @@
+---
+// Static version of the "Systems Map" (PLAN.md §3.5). Interactive node graph
+// can come later; the content and proof lines are the point.
+const branches = [
+  {
+    name: 'Unity & Engine',
+    nodes: [
+      { label: 'GameObject architecture' },
+      { label: 'DOTS / ECS' },
+      { label: 'Jobs + Burst' },
+      { label: 'Addressables', proof: 'Cargo Simulator chunk streaming' },
+      { label: 'Profiling' },
+    ],
+  },
+  {
+    name: 'Architecture',
+    nodes: [
+      { label: 'Composition over inheritance' },
+      { label: 'DI — Zenject / VContainer' },
+      { label: 'SOLID' },
+      { label: 'Modular assemblies', proof: 'HG framework, 10+ titles' },
+    ],
+  },
+  {
+    name: 'Multiplayer',
+    nodes: [
+      { label: 'Client-server model' },
+      { label: 'Replication', proof: 'Highstreet VR multiplayer' },
+      { label: 'Prediction' },
+      { label: 'Packing & compression' },
+    ],
+  },
+  {
+    name: 'VR & Physics',
+    nodes: [
+      { label: 'IK' },
+      { label: 'Joints & constraints', proof: 'Highstreet VR combat' },
+      { label: 'Interaction systems' },
+    ],
+  },
+  {
+    name: 'AI & Procedural',
+    nodes: [
+      { label: 'FSM', proof: 'Cargo Simulator delivery agents' },
+      { label: 'Behavior trees' },
+      { label: 'NavMesh' },
+      { label: 'Procedural roads', proof: 'Cargo Simulator' },
+    ],
+  },
+  {
+    name: 'Backend & Tools',
+    nodes: [
+      { label: 'ASP.NET' },
+      { label: 'MySQL / NoSQL' },
+      { label: 'Firebase' },
+      { label: 'CI/CD', proof: 'HG Builder — 2+ hrs/day saved' },
+      { label: 'Python' },
+    ],
+  },
+];
+---
+
+<section class="section" id="skills">
+  <div class="container">
+    <h2 class="section-title"><span class="index">02 /</span> Systems map</h2>
+    <p class="lede">
+      No levels, no percentages. Where it matters, a node points at the shipped work that
+      proves it.
+    </p>
+    <div class="branches">
+      {
+        branches.map((branch) => (
+          <article class="branch">
+            <h3>{branch.name}</h3>
+            <ul>
+              {branch.nodes.map((node) => (
+                <li>
+                  <span class="node">{node.label}</span>
+                  {node.proof && <span class="proof">used in: {node.proof}</span>}
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .lede {
+    margin-bottom: var(--space-4);
+  }
+
+  .branches {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .branches {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .branches {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .branch {
+    background: var(--panel);
+    border: 1px solid var(--chunk-line);
+    border-radius: 6px;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  h3 {
+    border-bottom: 1px solid var(--chunk-line);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .node {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+  }
+
+  .node::before {
+    color: var(--signal);
+    content: '▪ ';
+  }
+
+  .proof {
+    color: var(--ink-dim);
+    font-size: var(--text-xs);
+    padding-left: var(--space-3);
+  }
+</style>

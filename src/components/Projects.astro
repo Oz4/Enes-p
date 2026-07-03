@@ -1,0 +1,125 @@
+---
+const projects = [
+  {
+    title: 'My Corp Cargo Simulator',
+    meta: 'NocturnForge · Lead, solo-shipped on Steam',
+    blurb:
+      'Open-world cargo simulator: chunked world streaming, procedural road network, delivery-agent AI. Designed, built, and shipped by one person.',
+    chips: ['Unity', 'C#', 'Addressables'],
+    href: '/projects/cargo-simulator/',
+  },
+  {
+    title: 'Highstreet Market',
+    meta: 'Senior Engineer · VR multiplayer',
+    blurb:
+      'VR multiplayer physics and combat systems. Custom joint and constraint handling that eliminated latency-induced jitter on handheld objects over the network.',
+    chips: ['Unity', 'VR', 'Multiplayer'],
+    href: null,
+  },
+  {
+    title: 'HG Idle Arcade Framework + HG Builder',
+    meta: 'Hero Games · Senior Engineer',
+    blurb:
+      'One framework flexible enough to ship 10+ different mobile titles, plus build-automation tooling that saved the team 2+ hours every day.',
+    chips: ['Unity', 'C#', 'CI/CD'],
+    href: null,
+  },
+  {
+    title: 'Idle Town',
+    meta: 'Solo · built before graduation',
+    blurb:
+      'Asynchronous multiplayer Telegram game serving 400K registered users and 1K concurrent — on PHP, MySQL, cron jobs, and webhooks.',
+    chips: ['PHP', 'MySQL', 'Webhooks'],
+    href: null,
+  },
+];
+---
+
+<section class="section" id="projects">
+  <div class="container">
+    <h2 class="section-title"><span class="index">01 /</span> Featured projects</h2>
+    <div class="grid">
+      {
+        projects.map((p) => (
+          <article class="card">
+            <h3>{p.title}</h3>
+            <p class="meta">{p.meta}</p>
+            <p class="blurb">{p.blurb}</p>
+            <ul class="chip-row">
+              {p.chips.map((c) => (
+                <li class="chip">{c}</li>
+              ))}
+            </ul>
+            {p.href ? (
+              <a class="cta" href={p.href}>
+                Read case study →
+              </a>
+            ) : (
+              <p class="pending">Case study in progress</p>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--chunk-line);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-4);
+  }
+
+  h3 {
+    font-size: var(--text-md);
+    margin: 0;
+  }
+
+  .meta {
+    color: var(--signal);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    margin: 0;
+  }
+
+  .blurb {
+    color: var(--ink-dim);
+    font-size: var(--text-sm);
+    flex-grow: 1;
+    margin: 0;
+  }
+
+  .cta {
+    color: var(--signal);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .cta:hover {
+    text-decoration: underline;
+  }
+
+  .pending {
+    color: var(--ink-dim);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    margin: 0;
+  }
+</style>

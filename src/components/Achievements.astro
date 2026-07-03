@@ -1,0 +1,60 @@
+---
+const badges = [
+  { label: 'Solo-shipped on Steam', href: '/projects/cargo-simulator/' },
+  { label: '400K+ registered users', href: '/#timeline' },
+  { label: '10+ titles to production', href: '/#timeline' },
+  { label: '2h/day saved via CI/CD tooling', href: '/#timeline' },
+  { label: 'Shipped VR multiplayer', href: '/#timeline' },
+  { label: 'Built a CPU ray tracer from scratch', href: '/#timeline' },
+  { label: 'Trilingual: EN / AR / TR', href: null },
+];
+---
+
+<section class="section" id="achievements">
+  <div class="container">
+    <h2 class="section-title"><span class="index">04 /</span> Achievements</h2>
+    <ul>
+      {
+        badges.map((badge) => (
+          <li>
+            {badge.href ? (
+              <a class="badge" href={badge.href}>
+                {badge.label}
+              </a>
+            ) : (
+              <span class="badge">{badge.label}</span>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .badge {
+    background: var(--panel);
+    border: 1px solid var(--chunk-line);
+    border-left: 3px solid var(--signal);
+    border-radius: 4px;
+    color: var(--ink);
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: var(--space-2) var(--space-3);
+    text-decoration: none;
+  }
+
+  a.badge:hover {
+    border-color: var(--signal);
+  }
+</style>

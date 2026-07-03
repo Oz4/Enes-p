@@ -56,6 +56,103 @@ video {
   height: auto;
 }
 
+/* Shared patterns used across components */
+
+.container {
+  margin: 0 auto;
+  max-width: 64rem;
+  padding-inline: var(--space-4);
+  width: 100%;
+}
+
+.section {
+  padding-block: var(--space-6);
+}
+
+.section-title {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-4);
+}
+
+.section-title .index {
+  color: var(--ink-dim);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-stretch: normal;
+  font-weight: 400;
+  margin-right: var(--space-2);
+  vertical-align: middle;
+}
+
+.lede {
+  color: var(--ink-dim);
+  max-width: 40rem;
+}
+
+.chip {
+  border: 1px solid var(--chunk-line);
+  border-radius: 3px;
+  color: var(--ink-dim);
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  padding: 2px var(--space-2);
+  white-space: nowrap;
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.btn {
+  border: 1px solid transparent;
+  border-radius: 4px;
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  padding: var(--space-2) var(--space-4);
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--signal);
+  color: var(--asphalt);
+}
+
+.btn-primary:hover {
+  filter: brightness(1.08);
+}
+
+.btn-secondary {
+  border-color: var(--chunk-line);
+  color: var(--ink);
+}
+
+.btn-secondary:hover {
+  border-color: var(--signal);
+}
+
+.skip-link {
+  background: var(--panel);
+  color: var(--ink);
+  left: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  position: absolute;
+  top: -100px;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: var(--space-3);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

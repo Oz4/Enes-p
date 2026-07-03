@@ -1,0 +1,30 @@
+---
+import { SITE } from '../data/site';
+---
+
+<section class="section" id="contact">
+  <div class="container">
+    <h2 class="section-title"><span class="index">05 /</span> Contact</h2>
+    <p class="open-to">{SITE.openTo}</p>
+    <div class="actions">
+      <a class="btn btn-primary" href={`mailto:${SITE.email}`}>Email me</a>
+      <a class="btn btn-secondary" href={SITE.cvPath} download>Download CV</a>
+      <a class="btn btn-secondary" href={SITE.github}>GitHub</a>
+      <a class="btn btn-secondary" href={SITE.linkedin}>LinkedIn</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .open-to {
+    color: var(--ink-dim);
+    margin-bottom: var(--space-4);
+    max-width: 40rem;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

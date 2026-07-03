@@ -1,0 +1,149 @@
+---
+const entries = [
+  {
+    period: '2025–2026',
+    title: 'NocturnForge — Lead Engineer',
+    bullets: [
+      'Designed, built, and shipped My Corp Cargo Simulator solo on Steam: an open-world logistics sim.',
+      'Chunked world streaming on Addressables; ID-based entity system for decoupled, data-oriented gameplay.',
+      'Procedural road network and FSM-driven delivery agents pathfinding between depots.',
+    ],
+    chips: ['Unity', 'C#', 'Addressables', 'Steam'],
+  },
+  {
+    period: '2023–2025',
+    title: 'Highstreet Market — Senior Engineer',
+    bullets: [
+      'VR multiplayer physics and combat systems.',
+      'Custom joint/constraint handling that eliminated latency-induced jitter on handheld objects in networked VR.',
+    ],
+    chips: ['Unity', 'VR', 'Multiplayer'],
+  },
+  {
+    period: '2021–2023',
+    title: 'Hero Games — Senior Engineer',
+    bullets: [
+      'Built the HG Idle Arcade Framework — one framework powering 10+ shipped mobile titles.',
+      'HG Builder CI/CD tooling: build automation that saved the team 2+ hours daily.',
+    ],
+    chips: ['Unity', 'C#', 'CI/CD'],
+  },
+  {
+    period: '2021',
+    title: 'University projects',
+    bullets: [
+      'VR combat project.',
+      'CPU ray tracer built from scratch.',
+    ],
+    chips: ['VR', 'Ray tracing'],
+  },
+  {
+    period: '2019',
+    title: 'Idle Fisher',
+    bullets: ['Idle game.'],
+    chips: [],
+  },
+  {
+    period: '2017',
+    title: 'Idle Town — solo, pre-graduation',
+    bullets: [
+      'Asynchronous multiplayer Telegram game: 400K registered users, 1K concurrent.',
+      'PHP + MySQL backend running on cron jobs and webhooks — built while still a student.',
+    ],
+    chips: ['PHP', 'MySQL', 'Webhooks'],
+  },
+];
+---
+
+<section class="section" id="timeline">
+  <div class="container">
+    <h2 class="section-title"><span class="index">03 /</span> Quest log</h2>
+    <p class="lede">Experience, newest first.</p>
+    <ol>
+      {
+        entries.map((entry) => (
+          <li>
+            <p class="stamp">
+              <span class="check" aria-hidden="true">✓</span>
+              <span class="period">[{entry.period}]</span>
+            </p>
+            <h3>{entry.title}</h3>
+            <ul class="bullets">
+              {entry.bullets.map((b) => (
+                <li>{b}</li>
+              ))}
+            </ul>
+            {entry.chips.length > 0 && (
+              <ul class="chip-row">
+                {entry.chips.map((c) => (
+                  <li class="chip">{c}</li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  ol {
+    border-left: 1px solid var(--chunk-line);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 var(--space-4);
+  }
+
+  ol > li {
+    position: relative;
+  }
+
+  /* timeline node */
+  ol > li::before {
+    background: var(--asphalt);
+    border: 1px solid var(--chunk-line);
+    border-radius: 50%;
+    content: '';
+    height: 9px;
+    left: calc(-1 * var(--space-4) - 5px);
+    position: absolute;
+    top: 6px;
+    width: 9px;
+  }
+
+  .stamp {
+    display: flex;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    margin-bottom: var(--space-1);
+  }
+
+  .check {
+    color: var(--telemetry);
+  }
+
+  .period {
+    color: var(--ink-dim);
+  }
+
+  h3 {
+    font-size: var(--text-md);
+    margin-bottom: var(--space-2);
+  }
+
+  .bullets {
+    color: var(--ink-dim);
+    font-size: var(--text-sm);
+    margin: 0 0 var(--space-2);
+    padding-left: 1.2em;
+  }
+
+  .bullets li + li {
+    margin-top: var(--space-1);
+  }
+</style>

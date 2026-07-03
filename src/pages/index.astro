@@ -1,65 +1,46 @@
 ---
 import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Showreel from '../components/Showreel.astro';
+import Projects from '../components/Projects.astro';
+import SkillsMap from '../components/SkillsMap.astro';
+import QuestLog from '../components/QuestLog.astro';
+import Achievements from '../components/Achievements.astro';
+import Contact from '../components/Contact.astro';
 ---
 
 <Base
   title="Enes Sahin — Senior Unity Engineer"
-  description="Senior Unity Engineer — systems, multiplayer, VR. Portfolio under construction."
+  description="Senior Unity Engineer — systems, multiplayer, VR. From a 400K-player game built at university to a solo-shipped open-world simulator on Steam."
 >
-  <main>
-    <h1>Enes Sahin</h1>
-    <p class="role">Senior Unity Engineer — Systems · Multiplayer · VR</p>
-    <p class="status"><span class="indicator" aria-hidden="true"></span>deploy pipeline online — phase 0 of 5</p>
-    <p class="note">Full site in progress. Contact and case studies land in phase 1.</p>
+  <Nav />
+  <main id="main">
+    <Hero />
+    <Showreel />
+    <Projects />
+    <SkillsMap />
+    <QuestLog />
+    <Achievements />
+    <Contact />
   </main>
+  <footer>
+    <div class="container">
+      <p>© 2026 Enes Sahin · Ankara, TR</p>
+    </div>
+  </footer>
 </Base>
 
 <style>
-  main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: var(--content-width);
-    margin: 0 auto;
-    min-height: 100dvh;
-    padding: var(--space-5) var(--space-4);
+  footer {
+    border-top: 1px solid var(--chunk-line);
+    padding-block: var(--space-4);
   }
 
-  h1 {
-    font-size: var(--text-hero);
-    margin-bottom: var(--space-2);
-  }
-
-  .role {
-    color: var(--ink);
-    font-size: var(--text-md);
-    margin-bottom: var(--space-4);
-  }
-
-  .status {
-    align-items: center;
-    border: 1px solid var(--chunk-line);
-    background: var(--panel);
-    border-radius: 4px;
-    color: var(--telemetry);
-    display: inline-flex;
-    gap: var(--space-2);
+  footer p {
+    color: var(--ink-dim);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    padding: var(--space-2) var(--space-3);
-    width: fit-content;
-  }
-
-  .indicator {
-    background: var(--telemetry);
-    border-radius: 50%;
-    height: 8px;
-    width: 8px;
-  }
-
-  .note {
-    color: var(--ink-dim);
-    font-size: var(--text-sm);
-    margin-top: var(--space-3);
+    margin: 0;
   }
 </style>
