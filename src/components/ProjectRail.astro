@@ -198,9 +198,14 @@ const thumb = (id: string | undefined) =>
     padding-block: var(--space-4) var(--space-5);
     /* first card sits at the container's left content edge */
     --rail-gutter: max(calc((100vw - 64rem) / 2 + var(--space-4)), var(--space-4));
-    padding-inline: var(--rail-gutter);
+    --rail-card-w: min(72vw, 23rem);
+    padding-inline-start: var(--rail-gutter);
+    /* end padding lets the LAST card align to the start edge — without it,
+       mandatory snapping made cards past the max scroll unreachable */
+    padding-inline-end: calc(100vw - var(--rail-gutter) - var(--rail-card-w));
     scroll-padding-inline-start: var(--rail-gutter);
-    scroll-snap-type: x mandatory;
+    /* proximity, not mandatory: never fights the drag, allows every rest */
+    scroll-snap-type: x proximity;
     scrollbar-width: none;
   }
 
@@ -225,7 +230,7 @@ const thumb = (id: string | undefined) =>
       transform 0.3s ease-out,
       filter 0.3s ease-out,
       box-shadow 0.3s ease-out;
-    width: min(72vw, 23rem);
+    width: var(--rail-card-w);
   }
 
   .rail-card.active {
