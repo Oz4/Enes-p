@@ -18,7 +18,7 @@ import '../styles/tokens.css';
       <p class="role">SENIOR UNITY ENGINEER — SYSTEMS · MULTIPLAYER · VR</p>
       <h1>Enes Sahin</h1>
       <p class="chips">Shipped on Steam · 400K+ players served · VR multiplayer · 10+ yrs</p>
-      <p class="bar">FPS 60 · agents 14 · chunks 9/24 loaded</p>
+      <p class="bar">network online · trails 22 · deliveries en route</p>
     </div>
   </body>
 </html>
@@ -30,8 +30,9 @@ import '../styles/tokens.css';
 
   .card {
     background:
-      linear-gradient(var(--edge) 1px, transparent 1px) 0 0 / 60px 60px,
-      linear-gradient(90deg, var(--edge) 1px, transparent 1px) 0 0 / 60px 60px,
+      radial-gradient(ellipse 55% 45% at 22% 28%, rgba(139, 92, 246, 0.16), transparent 70%),
+      radial-gradient(ellipse 50% 42% at 78% 62%, rgba(34, 211, 238, 0.12), transparent 70%),
+      radial-gradient(ellipse 42% 32% at 55% 95%, rgba(255, 180, 84, 0.1), transparent 70%),
       var(--void);
     box-sizing: border-box;
     display: flex;
@@ -49,10 +50,14 @@ import '../styles/tokens.css';
     font-size: 24px;
     letter-spacing: 0.05em;
     margin: 0 0 24px;
+    text-shadow: 0 0 22px rgba(255, 180, 84, 0.5);
   }
 
   h1 {
-    color: var(--ink);
+    background: linear-gradient(100deg, var(--ink), var(--neon-violet) 35%, var(--neon-cyan) 70%, var(--ink));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
     font-family: 'Archivo Variable', sans-serif;
     font-stretch: expanded;
     font-size: 120px;
@@ -79,5 +84,6 @@ import '../styles/tokens.css';
     padding: 18px 80px;
     position: absolute;
     right: 0;
+    text-shadow: 0 0 18px rgba(34, 211, 238, 0.6);
   }
 </style>

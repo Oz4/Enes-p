@@ -10,64 +10,86 @@ The site is a fast, clean, scrollable professional CV. Behind and around it runs
 
 ---
 
-## 1. Design Direction
+## 1. Design Direction — V2 "Night Delivery Network"
+
+> V2 (redesign-v2) supersedes the original flat gray/amber direction. Content,
+> structure, accessibility, and recruiter-first rules are unchanged.
 
 ### Grounding
-The visual world comes from Enes's actual subject matter: the Unity editor, logistics/cargo simulation, telemetry and profiling. Not "gamer neon," not fantasy — engineered, industrial, precise.
+The site is an open-world city at night seen from above, with long-exposure
+light trails of deliveries flowing through it — the subject matter of Enes's
+systems work rendered cinematically. Dark, colorful, atmospheric; awwwards-level
+polish, never at the cost of readability or the performance budget.
 
-### Color tokens
-Avoid pure black + single neon accent (an overused default). Two accents, each with a defined job:
+### Color tokens (src/styles/tokens.css)
 
-| Token | Hex | Role |
+| Token | Value | Role |
 |---|---|---|
-| `--asphalt` | `#1A1C1E` | Base background (deep warm gray, not pure black) |
-| `--panel` | `#26292C` | Cards, panels (Unity-editor gray family) |
-| `--chunk-line` | `#3A4148` | Grid lines, borders, world-grid overlay |
-| `--ink` | `#E8EAED` | Primary text |
-| `--ink-dim` | `#9AA0A6` | Secondary text, labels |
-| `--signal` | `#F5A623` | Primary accent: CTAs, active states, delivery agents, hazard-stripe details (cargo/logistics amber) |
-| `--telemetry` | `#4ADE9C` | Secondary accent: profiler readouts, "live/running" indicators, success states only |
+| `--void` | `#060608` | Base background (never pure black) |
+| `--surface` | `rgba(255,255,255,0.03)` | Glass panels (with 1px gradient borders via `--grad-edge`) |
+| `--edge` | `rgba(255,255,255,0.08)` | Hairline borders |
+| `--ink` | `#F2F3F7` | Primary text — high contrast, glow-free |
+| `--ink-dim` | `#8B90A0` | Secondary text, labels |
+| `--trail-amber` | `#FFB454` | Light trails, primary CTA |
+| `--trail-crimson` | `#FF3B5C` | Taillights — rare accents only |
+| `--neon-violet` | `#8B5CF6` | Identity gradient + glows |
+| `--neon-cyan` | `#22D3EE` | Identity gradient + live readouts |
+| `--grad-identity` | violet → cyan | Display-type sheen, key edges |
 
-Rule: `--signal` is for actions and the simulation; `--telemetry` is exclusively for live data readouts. Never swap them.
+### Light system
+Soft radial glows behind each section (violet/cyan at 3–6% opacity), a subtle
+violet vignette, a fine animated grain overlay at ~3% opacity, glow-on-hover on
+interactive elements. Body text stays high-contrast and glow-free.
 
-### Typography
-- **Display:** Archivo (Expanded, 700–900) — industrial, signage-adjacent, used only for section titles and the hero name.
-- **Body:** Overpass — derived from U.S. Highway Gothic signage; a quiet thematic link to a cargo/delivery simulator. Highly readable.
-- **Utility/mono:** JetBrains Mono — telemetry bar, tech-stack chips, code-ish labels, timestamps.
-- Type scale: 1.25 ratio; hero name is the single oversized moment on the page.
-
-### Signature element (the one memorable thing)
-The **ambient simulation + live profiler bar** combo. Everything else stays disciplined and quiet. The profiler bar is a thin fixed strip (bottom edge, collapsible) showing *real* stats of the page itself: `FPS 60 · agents 14 · chunks 9/24 loaded · JS 82kb`. Honest, technical, quietly funny — and self-refuting if the site is slow, which is exactly the point: it forces us to keep it fast.
+### Typography (unchanged)
+Archivo (Expanded 700–900) display · Overpass body · JetBrains Mono utility.
+1.25 type scale; hero name is the single oversized moment, carrying the
+identity-gradient sheen (one sweep on load, then a slow drift).
 
 ### Motion rules
-- One orchestrated page-load moment: the hero grid draws in, roads generate, name types/settles. ≤ 1.2s, skippable, respects `prefers-reduced-motion` (static rendered frame instead).
-- Scroll reveals: subtle, 150–250ms, no parallax circus.
-- The simulation is ambient and slow — it should feel like a screensaver from a systems game, not a fireworks show.
+- One orchestrated load moment: scene fades up, trails ignite, name sheen
+  sweeps once. ≤ 1.5s, skippable, reduced-motion safe (static poster instead).
+- Scroll reveals subtle (150–250ms); quest-log route line draws in on scroll.
+- The scene is ambient and slow — long-exposure city, not a fireworks show.
 
 ### Tone of copy
-Plain, specific, engineer-to-engineer. No "passionate ninja rockstar." Numbers over adjectives ("saved 2+ hours daily," "400K+ registered users," "eliminated latency-induced jitter").
+Unchanged: plain, specific, engineer-to-engineer. Numbers over adjectives.
 
 ---
 
-## 2. The Simulation (spec)
+## 2. The Background Scene (spec) — three.js
 
-**What it is:** A top-down 2D canvas simulation (Canvas 2D API, not Three.js — cheaper, sharper, sufficient) rendered behind the hero and persisting faintly behind section backgrounds.
+**What it is:** A fixed full-viewport WebGL canvas behind all content
+(`src/scene/`: `network.ts`, `trails.ts`, `dispatch.ts`, `postfx.ts`), subtly
+visible through the page. Replaces the V1 Canvas-2D sim and sandbox mode
+(both removed).
 
 **Behavior:**
-1. A grid of "world chunks" — chunks near the viewport center render fully; distant ones show as faint outlines that "stream in" as the user scrolls (visualizing his Addressables chunk-streaming work).
-2. A procedural road network generates across loaded chunks (visualizing procedural roads).
-3. Small delivery agents (simple shapes, amber) pathfind along roads between depots (visualizing AI/FSM + navigation + the delivery loop of My Corp Cargo Simulator).
-4. Everything reports to the profiler bar.
+1. Dark ground plane, faint city grid, instanced dark blocks; a procedural
+   route network generated from deterministic edge hashes (L-shaped blocks).
+2. Glowing light trails flow along routes — amber streams with occasional
+   crimson/cyan — rendered as additive shader sprites (head + fading tail).
+3. Slow ambient camera drift; mouse parallax capped at ~2°.
+4. **Dispatch interaction:** clicking/tapping the background routes a bright
+   streak from the click point through the network to a depot, pulsing on
+   arrival. No UI, max 5 concurrent, works wherever the scene is visible.
+   Clicks on real UI elements are never intercepted.
+5. A single mono net-line in the footer reports live fps / trails / deliveries.
 
-**Sandbox mode (the optional mini-game, v1.1):** A "Sandbox" toggle in the nav. When on, the simulation becomes interactive: click to place road segments, place a depot, spawn agents, watch them route; a small panel shows agent states (FSM: Idle → Pickup → Deliver). No score, no fail state — it's a toy demonstrating real systems. Prominent "Exit sandbox" returns to the CV. **The CV is never gated behind this.**
+**Performance guardrails:** bloom postprocessing on desktop only (mobile gets
+additive-sprite fake glow, no postFX); devicePixelRatio capped at 1.5; rAF
+canceled on hidden tabs; the scene bundle lazy-loads on **first user
+interaction** (fallback 6s timer) so it never competes with document paint.
+Scene bundle budget: **≤ 250kb gzipped including three.js** (currently ~139kb).
 
-**Performance guardrails:** requestAnimationFrame with tab-visibility pause; agent cap scales with device (mobile ≈ 6, desktop ≈ 16); sim pauses when scrolled past hero on low-end devices; total sim code budget ≤ 25kb gzipped.
+**Fallbacks:** `prefers-reduced-motion`, no WebGL, or Save-Data → static CSS
+gradient poster. The page is fully readable with JS disabled.
 
 ---
 
 ## 3. Sitemap & Page Structure
 
-Single-page scroll site + separate case-study pages. Sticky minimal nav: `Projects · Skills · Timeline · Contact · [Sandbox] · [Download CV]`.
+Single-page scroll site + separate case-study pages. Sticky minimal nav: `Projects · Skills · Timeline · Contact · [Download CV]`.
 
 ### 3.1 Hero (the 5-second test)
 - Simulation running behind, dimmed.
@@ -81,14 +103,23 @@ Single-page scroll site + separate case-study pages. Sticky minimal nav: `Projec
 ### 3.2 Showreel
 60–90s muted autoplay-on-hover video (click for sound), poster frame otherwise. **Content Enes must capture** (biggest current gap — see §7): IK hand placement, open-world streaming flythrough, VR grabbing/combat, agents pathfinding, editor tooling.
 
-### 3.3 Featured Projects (4 cards)
-Steam-capsule-style cards: key art/GIF, title, one-line role, 3 tech chips, "Read case study →".
+### 3.3 Featured Projects — PS5-style rail (V2)
+Full-bleed horizontal rail with scroll-snap: tall 3:4 cards, large key art /
+trailer video filling each card, bottom gradient scrim with title, one-line
+role, tech chips. The active (centered) card scales to ~1.05 and plays its
+video muted; neighbors dim to 60%. Drag, trackpad/wheel, arrow keys, visible
+focus states. Same four projects:
 1. **My Corp Cargo Simulator** (NocturnForge) — Lead / solo-shipped open-world sim, Steam.
 2. **Highstreet Market** — VR multiplayer physics & combat systems.
 3. **HG Idle Arcade Framework + HG Builder** — framework powering 10+ shipped mobile titles + CI/CD tooling.
 4. **Idle Town** — 400K-user asynchronous multiplayer Telegram game (PHP/MySQL), built solo pre-graduation.
 
-### 3.4 Case Study template (each project page)
+### 3.4 Case Study template — bottom sheet (V2)
+Case studies open in an 85vh glass bottom sheet over the dimmed page (no
+separate routes; old `/projects/*` URLs redirect). Deep-linkable via
+`#/project/<slug>`; back button closes; X / ESC / swipe-down / backdrop click;
+focus trapped inside; body scroll locked. Without JS, the same articles render
+in normal document flow below the rail. Each sheet:
 Three-part structure, in this order:
 1. **What it is** — 2 sentences + video/GIF strip.
 2. **What I built** — his exact contributions, verbatim-level specificity from the CV, grouped (Architecture / Gameplay / Performance / Tools).
@@ -114,22 +145,22 @@ Vertical timeline, terminal/log aesthetic (mono timestamps), newest first: Noctu
 - Email (mailto), GitHub, LinkedIn (Enes to confirm URL).
 - **Download CV** — direct PDF, one click, no gate. Filename: `Enes-Sahin-Unity-Engineer-CV.pdf`.
 - "Open to" line: *Senior/Lead Unity roles — multiplayer, systems, VR. Remote (based in Ankara, TR).*
-- Footer easter egg: profiler bar prints `-- simulation still running. thanks for scrolling. --`
+- Footer: a single mono net-line reports live scene stats (`network online · 60 fps · trails 22 · deliveries N`).
 
 ---
 
 ## 4. Tech Stack (the site itself)
 
 - **Framework:** Astro — content-first, ships ~zero JS by default, perfect Lighthouse scores achievable, case studies as markdown content collections.
-- **Sim & interactivity:** Vanilla TypeScript + Canvas 2D as an Astro island (`client:idle`), so the document renders instantly and the sim hydrates after.
+- **Scene & interactivity:** three.js WebGL scene in `src/scene/`, lazy-loaded on first interaction so the document renders and paints first.
 - **Styling:** Plain CSS with custom properties (design tokens above). No Tailwind needed at this scale; keeps output tiny.
 - **Video:** Self-hosted compressed MP4/WebM (or Cloudflare Stream), poster images, `preload="none"`.
 - **Hosting:** Vercel or Netlify (either fine), custom domain (e.g., `enessahin.dev`).
 - **Analytics:** none or privacy-light (Plausible) — optional.
 
-**Performance budget (hard limits):** LCP < 1.5s, total JS < 100kb gzipped, Lighthouse ≥ 95 across the board, sim ≤ 25kb. The profiler bar makes these promises public — we must keep them.
+**Performance budget (hard limits):** LCP < 2s, Lighthouse ≥ 90 mobile (currently 98 mobile / 100 desktop), scene bundle ≤ 250kb gzipped including three.js, zero layout shift from the canvas. The footer net-line makes the scene's honesty public.
 
-**Accessibility floor:** semantic HTML underneath everything, keyboard-navigable, visible focus states, `prefers-reduced-motion` respected, alt text on all media, sim is `aria-hidden` decoration.
+**Accessibility floor:** semantic HTML underneath everything, keyboard-navigable, visible focus states, `prefers-reduced-motion` respected, alt text on all media, scene is `aria-hidden` decoration; rail and sheet fully keyboard-navigable (focus trap in the sheet).
 
 ---
 
@@ -147,10 +178,10 @@ enes-portfolio/
 ├── src/
 │   ├── styles/tokens.css
 │   ├── components/       # Hero, ProjectCard, TechBox, ProfilerBar, QuestLog, SkillsMap, Achievements, Contact
-│   ├── sim/              # engine.ts, chunks.ts, roads.ts, agents.ts, profiler.ts, sandbox.ts
+│   ├── scene/            # index.ts, network.ts, trails.ts, dispatch.ts, postfx.ts
 │   ├── content/projects/ # cargo-simulator.md, highstreet.md, hero-games.md, idle-town.md
 │   ├── layouts/
-│   └── pages/            # index.astro, projects/[slug].astro
+│   └── pages/            # index.astro, 404.astro (case studies live in the sheet)
 └── package.json
 ```
 
@@ -170,7 +201,14 @@ enes-portfolio/
 
 **Phase 5 — Hardening.** Lighthouse audit, real-device mobile pass, cross-browser, copy edit, Enes review.
 
-Rule: **never let Phase 2–4 break Phase 1.** The document always works with JS disabled.
+Rule: **never let later phases break Phase 1.** The document always works with JS disabled.
+
+**V2 — "Night Delivery Network" redesign (branch `redesign-v2`, supersedes V1 visuals):**
+1. Relight — new tokens, light system, glass panels; V1 sim/sandbox/profiler removed.
+2. three.js background scene with click-to-dispatch.
+3. PS5-style project rail + bottom-sheet case studies (project routes removed, redirects in place).
+4. Quality: Lighthouse 98 mobile / 100 desktop, keyboard pass, doc updates.
+Sandbox mode was removed in V2 — the dispatch interaction replaces it.
 
 ---
 

@@ -19,18 +19,24 @@
     }
   }
 
+  let started = false;
   const start = async () => {
+    if (started) return;
+    started = true;
+    for (const evt of TRIGGERS) window.removeEventListener(evt, start);
     const root = document.getElementById('scene-root');
-    if (!root || reduced || !webglOK()) return;
+    const conn = (navigator as { connection?: { saveData?: boolean } }).connection;
+    if (!root || reduced || conn?.saveData || !webglOK()) return;
     const { initScene } = await import('../scene');
     initScene(root);
   };
 
-  if ('requestIdleCallback' in window) {
-    requestIdleCallback(start, { timeout: 2500 });
-  } else {
-    setTimeout(start, 400);
-  }
+  // Deliberately NOT on idle: three.js parse + init is the page's one heavy
+  // task, so it waits for the first sign of a human (or a late fallback).
+  // The document is fully usable before, over the CSS poster.
+  const TRIGGERS = ['pointermove', 'pointerdown', 'touchstart', 'keydown', 'scroll'] as const;
+  for (const evt of TRIGGERS) window.addEventListener(evt, start, { passive: true });
+  setTimeout(start, 6000);
 </script>
 
 <style>

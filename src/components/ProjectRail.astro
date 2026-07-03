@@ -17,20 +17,8 @@ const thumb = (id: string | undefined) =>
   <div class="rail" id="project-rail" aria-label="Featured projects — horizontal list">
     {
       projects.map((p, i) => (
-        <button
-          class="rail-card"
-          data-slug={p.id}
-          data-yt={p.data.trailer}
-          aria-haspopup="dialog"
-          aria-label={`${p.data.title} — open case study`}
-        >
-          <img
-            src={thumb(p.data.trailer)}
-            alt=""
-            width="960"
-            height="720"
-            loading={i < 2 ? 'eager' : 'lazy'}
-          />
+        <button class="rail-card" data-slug={p.id} data-yt={p.data.trailer} aria-haspopup="dialog">
+          <img src={thumb(p.data.trailer)} alt="" width="960" height="720" loading="lazy" />
           <span class="video-slot" aria-hidden="true"></span>
           <span class="scrim" aria-hidden="true"></span>
           <span class="info">

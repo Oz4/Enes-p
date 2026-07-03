@@ -2,22 +2,25 @@
 
 ## What this project is
 A portfolio/CV website for Enes Sahin, Senior Unity Engineer (systems, multiplayer, VR).
-Concept: "The Systems Engineer" — a fast, clean, scrollable CV with an ambient canvas
-simulation (chunk streaming, procedural roads, pathfinding delivery agents) and a live
-profiler bar as the signature element. Full spec lives in **PLAN.md — read it before
+Concept V2: "Night Delivery Network" — a fast, scrollable CV over a cinematic three.js
+night-city scene with long-exposure delivery light trails; clicking the background
+dispatches a delivery through the route network. (V1's Canvas-2D sim, sandbox mode, and
+profiler bar are REMOVED; a footer net-line reports live scene stats.) Full spec lives in **PLAN.md — read it before
 making changes.** Follow it exactly; ask before deviating.
 
 ## Non-negotiable rules
 1. **The document comes first.** The site must be fully readable and usable with
    JavaScript disabled. The simulation is decoration (`aria-hidden`), never a gate.
-2. **Performance budget is a hard limit:** total JS < 100kb gzipped, sim code < 25kb,
-   LCP < 1.5s, Lighthouse ≥ 95. Check bundle size after adding any dependency.
-   Prefer zero dependencies for the sim — vanilla TS + Canvas 2D only.
+2. **Performance budget is a hard limit:** scene bundle ≤ 250kb gzipped INCLUDING
+   three.js (three.js is the only allowed heavy dependency), LCP < 2s, Lighthouse ≥ 90
+   mobile, zero layout shift from the canvas. The scene lazy-loads on first user
+   interaction — never on the critical path. Check bundle size after any dependency change.
 3. **Design tokens only.** All colors/type come from `src/styles/tokens.css` (defined
-   in PLAN.md §1). Never hardcode hex values in components. `--signal` (amber) is for
-   actions and simulation entities; `--telemetry` (green) is only for live data readouts.
-4. **Respect `prefers-reduced-motion`** in every animation and in the simulation
-   (render one static frame instead).
+   in PLAN.md §1). Never hardcode hex values in components. `--trail-amber` is for light
+   trails and primary CTAs; `--neon-cyan` for live readouts; `--trail-crimson` is a rare
+   accent. Body text stays high-contrast and glow-free.
+4. **Respect `prefers-reduced-motion`** in every animation and in the scene
+   (serve the static gradient poster instead; no WebGL init).
 5. **Copy tone:** plain, specific, engineer-to-engineer. Numbers over adjectives.
    No emoji in site copy. Content facts come from PLAN.md / the CV — never invent
    projects, metrics, or dates.
@@ -26,12 +29,13 @@ making changes.** Follow it exactly; ask before deviating.
    Phase 1's plain-document behavior.
 
 ## Stack
-Astro + TypeScript, plain CSS with custom properties, Canvas 2D island for the sim
-(`client:idle`), content collections for case studies, deployed on Vercel.
+Astro + TypeScript, plain CSS with custom properties, three.js scene in `src/scene/`
+(lazy-loaded on first interaction), content collections for case studies rendered into
+the bottom sheet (no per-project routes — old `/projects/*` URLs redirect), Vercel.
 
 ## Conventions
-- Components in `src/components/`, sim modules in `src/sim/`, case studies as markdown
-  in `src/content/projects/`.
+- Components in `src/components/`, scene modules in `src/scene/`, case studies as
+  markdown in `src/content/projects/` (rendered in-flow for no-JS, cloned into the sheet).
 - Semantic HTML (header/main/section/article), visible focus states, alt text on all media.
 - Mobile-first CSS; test at 380px, 768px, 1280px widths.
 - No CSS frameworks, no UI kits, no icon mega-packs (inline SVG icons only).
