@@ -173,17 +173,18 @@ Plus a **Tech box** (Steam "system requirements" style, reskinned): engine, lang
 - Idle Town: serving 400K registered / 1K concurrent users on PHP + CronJobs + webhooks as a student.
 
 ### 3.5 Skills — "Systems Map" (angular color plates)
-The one deliberately loud moment on the page. Six irregular sharp clip-path
-polygons (quads + a pentagon, edges 2–6° off-axis, each a different FIXED
-shape; adjacent facing edges roughly parallel — deliberate randomness, not
-noise), staggered offsets, rotateY ≤ ±3°. Solid saturated fills from the
-scoped `--plate-*` tokens: Unity=orange #FF7A1A, Architecture=violet #B39DFC,
-Multiplayer=cyan #22D3EE, VR&Physics=magenta #FF66CD, AI&Procedural=acid
-#4ADE4A, Backend=yellow #E8FF47 (violet/magenta lightened from the original
-picks to hold ≥7:1). All text near-black `--plate-ink` (#0B0B10), proof lines
-at 70% black; measured contrast 7.5–17.6:1. No borders, no glow; hover lifts
-5px and brightens 6%. Mobile stacks with shallower cuts. These colors appear
-NOWHERE else — the rest of the site stays dark monochrome + amber. Branches: `Unity & Engine` (GameObject, DOTS/ECS, Jobs+Burst, Addressables, profiling) · `Architecture` (composition, DI — Zenject/VContainer, SOLID, modular assemblies) · `Multiplayer` (client-server, replication, prediction, packing/compression) · `VR & Physics` (IK, joints/constraints, interaction) · `AI & Procedural` (FSM, behavior trees, navmesh, procedural roads) · `Backend & Tools` (ASP.NET, MySQL/NoSQL, Firebase, CI/CD, Python). Hover a node → tooltip with 1-line proof ("Used in: Highstreet VR combat"). Every node links to evidence. No fake levels or percentages — proof instead of numbers.
+The one deliberately loud moment on the page. Six 5-6 sided sharp clip-path
+polygons (chamfered hexagon family) built from ONE shared slope system —
+vertical edges lean −3% top→bottom, horizontal edges +2% left→right, one
+chamfer angle family — so adjacent plates' facing edges are parallel and the
+composition reads organized, not noisy. Staggered offsets, rotateY ≤ ±3°.
+FOUR colors across six plates (scoped `--plate-*` tokens, no two neighbors
+alike): vibrant purple #7C3AED (Architecture, VR&Physics — white text),
+orange #FF7A1A (Unity, Backend — dark text), yellow #FFD60A (AI&Procedural —
+dark text), darker blue #1E40AF (Multiplayer — white text). Measured contrast
+5.1–13.9:1. No borders, no glow; hover lifts 5px and brightens 6%. Mobile
+stacks with shallower cuts. These colors appear NOWHERE else — the rest of
+the site stays dark monochrome + amber. Branches: `Unity & Engine` (GameObject, DOTS/ECS, Jobs+Burst, Addressables, profiling) · `Architecture` (composition, DI — Zenject/VContainer, SOLID, modular assemblies) · `Multiplayer` (client-server, replication, prediction, packing/compression) · `VR & Physics` (IK, joints/constraints, interaction) · `AI & Procedural` (FSM, behavior trees, navmesh, procedural roads) · `Backend & Tools` (ASP.NET, MySQL/NoSQL, Firebase, CI/CD, Python). Hover a node → tooltip with 1-line proof ("Used in: Highstreet VR combat"). Every node links to evidence. No fake levels or percentages — proof instead of numbers.
 
 ### 3.6 Quest Log — experience timeline (boxless, V2 iteration)
 No panels: text sits directly on the page. The glowing route-line spine with

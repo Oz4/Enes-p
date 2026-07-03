@@ -57,15 +57,13 @@
 
   /* Systems-map plate palette — EXCLUSIVE to the skills section, the one
      deliberately loud moment. Never use these elsewhere; the rest of the
-     site stays dark monochrome + amber. Violet/magenta are lightened from
-     the art-direction picks to hold ≥7:1 against --plate-ink. */
-  --plate-yellow: #e8ff47;
-  --plate-cyan: #22d3ee;
-  --plate-magenta: #ff66cd;
-  --plate-violet: #b39dfc;
+     site stays dark monochrome + amber. Four colors across six plates.
+     Orange/yellow carry dark text; purple/blue carry light text. */
+  --plate-purple: #7c3aed;
   --plate-orange: #ff7a1a;
-  --plate-acid: #4ade4a;
-  --plate-ink: #0b0b10; /* text on plates */
+  --plate-yellow: #ffd60a;
+  --plate-blue: #1e40af;
+  --plate-ink: #0b0b10; /* dark text on orange/yellow plates */
 
   /* Layout */
   --content-width: 44rem;
