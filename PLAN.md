@@ -36,6 +36,11 @@ polish, never at the cost of readability or the performance budget.
 | `--grad-identity` | violet → cyan | Hero name sheen ONLY |
 | `--grad-edge` | white 0.38 → 0.06 @45% → violet 0.18 | The standard "lit edge" 1px border on all glass |
 
+### Geometry — sharp
+`--radius: 0`: every UI surface (chips, pills, buttons, cards, rail cards,
+panels, sheet, video frames) has square corners; all radii route through the
+token.
+
 ### Light system — "less color, more light"
 Cinematic hierarchy: mostly darkness, few bright sources. The standard surface
 is near-black glass with a 1px **lit edge** border (white catching light at the
@@ -91,9 +96,12 @@ visible through the page. Replaces the V1 Canvas-2D sim and sandbox mode
    framing so 2–3 trails stay visible on first glance.
 3. Slow ambient camera drift; mouse parallax capped at ~2°.
 4. **Dispatch interaction:** clicking/tapping the background routes a bright
-   streak from the click point through the network to a depot, pulsing on
-   arrival. No UI, max 5 concurrent, works wherever the scene is visible.
-   Clicks on real UI elements are never intercepted.
+   streak from the click point through the network to a depot. No concurrency
+   cap — a token bucket allows 2 dispatches/second (extra clicks drop silently);
+   the cyan pulse fires at the click point instantly on accept, before routing;
+   trails and pulses are object-pooled (oldest recycled) so rapid clicking never
+   allocates. Only active while the hero is in view (scrim < 0.2). Clicks on
+   real UI elements are never intercepted.
 5. A single mono net-line in the footer reports live fps / trails / deliveries.
 
 **Performance guardrails:** bloom postprocessing on desktop only (mobile gets
@@ -111,24 +119,30 @@ gradient poster. The page is fully readable with JS disabled.
 
 Single-page scroll site + separate case-study pages. Sticky minimal nav: `Projects · Skills · Timeline · Contact · [Download CV]`.
 
-### 3.1 Hero (the 5-second test)
-- Simulation running behind, dimmed.
-- **Name:** Enes Sahin
-- **Role line:** Senior Unity Engineer — Systems · Multiplayer · VR
-- **Sub-line:** the positioning sentence above.
+### 3.1 Hero (the 5-second test) — V2 iteration
+Scene running behind (scrim 0). Content, top to bottom, nothing else:
+- **Role eyebrow:** SENIOR UNITY ENGINEER — SYSTEMS · MULTIPLAYER · VR
+- **Name:** Enes Sahin — solid `--ink`, fully stable. Every 6–9s (randomized) a
+  feathered amber-tinted "headlight sweep" passes over the letters once (~1.2s,
+  eased; text-clipped gradient whose base matches --ink). Disabled under
+  prefers-reduced-motion.
+- **One line:** "I build game systems that ship and scale."
 - **Proof chips (mono):** `Shipped on Steam` · `400K+ players served` · `VR multiplayer` · `10+ yrs building games`
 - **CTAs:** `Download CV` (primary, amber) · `View projects` (secondary). Contact icons: email, GitHub.
-- Tiny scroll cue.
 
-### 3.2 Showreel
-60–90s muted autoplay-on-hover video (click for sound), poster frame otherwise. **Content Enes must capture** (biggest current gap — see §7): IK hand placement, open-world streaming flythrough, VR grabbing/combat, agents pathfinding, editor tooling.
+### 3.2 Showreel — REMOVED (V2 iteration)
+No standalone showreel section. Footage lives in the rail cards (muted video on
+the active card) and the case-study sheet media strips. The capture checklist in
+§7 still applies — it feeds those slots.
 
 ### 3.3 Featured Projects — PS5-style rail (V2)
 Full-bleed horizontal rail with scroll-snap: tall 3:4 cards, large key art /
 trailer video filling each card, bottom gradient scrim with title, one-line
-role, tech chips. The active (centered) card scales to ~1.05 and plays its
-video muted; neighbors dim to 60%. Drag, trackpad/wheel, arrow keys, visible
-focus states. Same four projects:
+role, tech chips. Start-aligned: card 1 sits at the container's left content
+edge on load (scroll-snap-align: start, scroll-padding matching the page
+gutter, scroll pinned to 0 after fonts settle). The active (snapped) card
+scales to ~1.05 and plays its video muted; neighbors dim to 60%. Drag,
+trackpad/wheel, arrow keys, visible focus states. Same four projects:
 1. **My Corp Cargo Simulator** (NocturnForge) — Lead / solo-shipped open-world sim, Steam.
 2. **Highstreet Market** — VR multiplayer physics & combat systems.
 3. **HG Idle Arcade Framework + HG Builder** — framework powering 10+ shipped mobile titles + CI/CD tooling.
@@ -152,11 +166,19 @@ Plus a **Tech box** (Steam "system requirements" style, reskinned): engine, lang
 - HG: designing one framework flexible enough to ship 10+ different games; build automation saving 2+ hrs/day.
 - Idle Town: serving 400K registered / 1K concurrent users on PHP + CronJobs + webhooks as a student.
 
-### 3.5 Skills — "Systems Map" (RPG skill tree, engineered flavor)
-Not fantasy constellations — a **node graph styled like an architecture diagram** (his Core → Systems → Gameplay layering). Branches: `Unity & Engine` (GameObject, DOTS/ECS, Jobs+Burst, Addressables, profiling) · `Architecture` (composition, DI — Zenject/VContainer, SOLID, modular assemblies) · `Multiplayer` (client-server, replication, prediction, packing/compression) · `VR & Physics` (IK, joints/constraints, interaction) · `AI & Procedural` (FSM, behavior trees, navmesh, procedural roads) · `Backend & Tools` (ASP.NET, MySQL/NoSQL, Firebase, CI/CD, Python). Hover a node → tooltip with 1-line proof ("Used in: Highstreet VR combat"). Every node links to evidence. No fake levels or percentages — proof instead of numbers.
+### 3.5 Skills — "Systems Map" (tilted panel composition, V2 iteration)
+Six tall near-black glass panels (one per category) floating like act-selection
+cards: fixed per-panel tilts (rotateY −7°…+7°, rotateZ ±1°) and staggered
+vertical offsets (±16–40px) under container perspective — organized randomness,
+stable across loads. Sharp corners; each panel has its own accent edge light
+(rotating amber / violet / cyan / white): 1px edge + faint one-sided outer glow,
+as if lit from off-screen. Hover/focus straightens the panel and brightens its
+edge. Mobile stacks vertically with tilts reduced to ±2°. Branches: `Unity & Engine` (GameObject, DOTS/ECS, Jobs+Burst, Addressables, profiling) · `Architecture` (composition, DI — Zenject/VContainer, SOLID, modular assemblies) · `Multiplayer` (client-server, replication, prediction, packing/compression) · `VR & Physics` (IK, joints/constraints, interaction) · `AI & Procedural` (FSM, behavior trees, navmesh, procedural roads) · `Backend & Tools` (ASP.NET, MySQL/NoSQL, Firebase, CI/CD, Python). Hover a node → tooltip with 1-line proof ("Used in: Highstreet VR combat"). Every node links to evidence. No fake levels or percentages — proof instead of numbers.
 
-### 3.6 Quest Log — experience timeline
-Vertical timeline, terminal/log aesthetic (mono timestamps), newest first: NocturnForge (2025–2026, Lead) → Highstreet Market (2023–2025, Senior) → Hero Games (2021–2023, Senior) → University projects incl. VR combat + CPU ray tracer (2021) → Idle Fisher (2019) → Idle Town (2017). Each entry: role, 2–3 headline bullets, tech chips. Subtle "quest complete" checkmark styling — restrained, not cartoonish.
+### 3.6 Quest Log — experience timeline (boxless, V2 iteration)
+No panels: text sits directly on the page. The glowing route-line spine with
+small sharp square nodes, mono timestamps, role headings, ink-dim bullets, and
+wide entry spacing carry the structure. Newest first: NocturnForge (2025–2026, Lead) → Highstreet Market (2023–2025, Senior) → Hero Games (2021–2023, Senior) → University projects incl. VR combat + CPU ray tracer (2021) → Idle Fisher (2019) → Idle Town (2017). Each entry: role, 2–3 headline bullets, tech chips. Subtle "quest complete" checkmark styling — restrained, not cartoonish.
 
 ### 3.7 Achievements
 6–8 real badges, amber-on-panel, mono captions. E.g.: `Solo-shipped on Steam` · `400K+ registered users` · `10+ titles to production` · `2h/day saved via CI/CD tooling` · `Shipped VR multiplayer` · `Built a CPU ray tracer from scratch` · `Trilingual: EN/AR/TR`. Each badge tooltip links to its source project.
