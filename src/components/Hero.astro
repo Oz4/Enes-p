@@ -12,7 +12,10 @@ const chips = [
 <section class="hero">
   <div class="container">
     <p class="role">{SITE.role}</p>
-    <h1 id="hero-name">Enes Sahin</h1>
+    <h1 class="name">
+      Enes Sahin
+      <span class="name-sweep" aria-hidden="true">Enes Sahin</span>
+    </h1>
     <p class="tagline">I build game systems that ship and scale.</p>
     <ul class="chip-row" aria-label="Highlights">
       {chips.map((chip) => <li class="chip">{chip}</li>)}
@@ -36,27 +39,10 @@ const chips = [
 </section>
 
 <script>
-  // Headlight sweep: every 6–9s a warm band of light passes over the name
-  // once. The element never moves — only its clipped background animates.
-  const name = document.getElementById('hero-name');
-  if (name && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    let timer = 0;
-    const schedule = () => {
-      clearTimeout(timer);
-      timer = window.setTimeout(fire, 6000 + Math.random() * 3000);
-    };
-    const done = () => {
-      name.classList.remove('sweep');
-      schedule();
-    };
-    const fire = () => {
-      name.classList.add('sweep');
-      // safety: if animationend never arrives (hidden tab), recover
-      clearTimeout(timer);
-      timer = window.setTimeout(done, 2500);
-    };
-    name.addEventListener('animationend', done);
-    schedule();
+  // The sweep itself is pure CSS (7s loop with a long dwell). This only
+  // makes reduced-motion explicit during testing.
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    console.info('[hero] name sweep disabled: prefers-reduced-motion is active');
   }
 </script>
 
@@ -106,39 +92,50 @@ const chips = [
     text-transform: uppercase;
   }
 
-  /* Solid white, fully stable. The sweep is light passing OVER the
-     letters: an amber-tinted band in a text-clipped gradient whose base
-     matches --ink exactly, so engaging it is seamless. */
-  h1 {
+  /* Two stacked layers: the base h1 paints solid white and never changes;
+     the aria-hidden duplicate on top carries ONLY a feathered amber band
+     clipped to the glyphs (everything else transparent), so the sweep reads
+     as warm light passing over white letters. */
+  .name {
     color: var(--ink);
     font-size: clamp(var(--text-2xl), 8vw, 4.5rem);
     font-weight: 900;
     letter-spacing: -0.01em;
     margin-bottom: var(--space-3);
+    position: relative;
   }
 
-  h1.sweep {
+  .name-sweep {
+    /* band ≈ 8% of the 300% gradient ≈ 20% of the text width, feathered */
     background: linear-gradient(
         105deg,
-        var(--ink) 0%,
-        var(--ink) 38%,
-        color-mix(in srgb, var(--trail-amber) 45%, var(--ink)) 50%,
-        var(--ink) 62%,
-        var(--ink) 100%
+        transparent 46%,
+        color-mix(in srgb, var(--trail-amber) 85%, transparent) 50%,
+        transparent 54%
       )
-      100% 0 / 250% 100%;
+      10% 0 / 300% 100% no-repeat;
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
-    animation: headlight 1.2s cubic-bezier(0.45, 0, 0.3, 1) 1;
+    -webkit-text-fill-color: transparent;
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    /* 7s period: the band crosses in the first ~1.2s, then dwells parked
+       off-glyph. Killed by the global reduced-motion rule. */
+    animation: name-sweep 7s infinite;
   }
 
-  @keyframes headlight {
-    from {
-      background-position: 100% 0;
+  @keyframes name-sweep {
+    0% {
+      animation-timing-function: cubic-bezier(0.45, 0.05, 0.35, 0.95);
+      background-position: 10% 0;
     }
-    to {
-      background-position: 0% 0;
+    17.15% {
+      background-position: 90% 0;
+    }
+    100% {
+      background-position: 90% 0;
     }
   }
 
