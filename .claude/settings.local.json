@@ -11,7 +11,8 @@
       "Bash(ffmpeg -version)",
       "Bash(curl -s -o /dev/null -w \"home %{http_code} · \" https://enes-portfolio-brown.vercel.app)",
       "Bash(curl -s -o /dev/null -w \"showreel %{http_code} \\(%{size_download}b\\) · \" https://enes-portfolio-brown.vercel.app/media/showreel.webm)",
-      "Bash(curl -s -o /dev/null -w \"key-art %{http_code}\\\\n\" https://enes-portfolio-brown.vercel.app/media/hero-games-key-art.svg)"
+      "Bash(curl -s -o /dev/null -w \"key-art %{http_code}\\\\n\" https://enes-portfolio-brown.vercel.app/media/hero-games-key-art.svg)",
+      "Bash(python3 -)"
     ]
   }
 }

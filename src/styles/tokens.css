@@ -1,18 +1,31 @@
-/* Design tokens — single source of truth (PLAN.md §1).
-   Components must reference these variables; no hardcoded hex elsewhere. */
+/* Design tokens — single source of truth (PLAN.md §1, V2 "Night Delivery
+   Network"). Components must reference these variables; no hardcoded hex
+   elsewhere. */
 
 :root {
-  /* Color */
-  --asphalt: #1a1c1e;      /* base background — deep warm gray, not pure black */
-  --panel: #26292c;        /* cards, panels — Unity-editor gray family */
-  --chunk-line: #3a4148;   /* grid lines, borders, world-grid overlay */
-  --ink: #e8eaed;          /* primary text */
-  --ink-dim: #9aa0a6;      /* secondary text, labels */
-  --signal: #f5a623;       /* primary accent: CTAs, active states, sim entities */
-  --telemetry: #4ade9c;    /* secondary accent: live data readouts ONLY */
+  /* Color — an open-world city at night, long-exposure light trails */
+  --void: #060608;             /* base background, never pure black */
+  --surface: rgba(255, 255, 255, 0.03); /* glass panels */
+  --edge: rgba(255, 255, 255, 0.08);    /* hairline borders on glass */
+  --ink: #f2f3f7;              /* primary text — high contrast, glow-free */
+  --ink-dim: #8b90a0;          /* secondary text, labels */
+  --trail-amber: #ffb454;      /* light trails, primary CTA */
+  --trail-crimson: #ff3b5c;    /* taillights — rare accents only */
+  --neon-violet: #8b5cf6;      /* identity gradient + glows */
+  --neon-cyan: #22d3ee;        /* identity gradient + live readouts */
 
-  /* Typography */
-  --font-display: 'Archivo Variable', 'Archivo', sans-serif; /* Expanded 700–900: section titles + hero name only */
+  /* Identity gradient — display-type sheen, key edges */
+  --grad-identity: linear-gradient(90deg, var(--neon-violet), var(--neon-cyan));
+  /* Gradient hairline for glass borders */
+  --grad-edge: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.35),
+    rgba(34, 211, 238, 0.18) 45%,
+    rgba(255, 255, 255, 0.06)
+  );
+
+  /* Typography (unchanged from V1) */
+  --font-display: 'Archivo Variable', 'Archivo', sans-serif;
   --font-body: 'Overpass Variable', 'Overpass', sans-serif;
   --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', monospace;
 
@@ -23,7 +36,7 @@
   --text-lg: 1.563rem;
   --text-xl: 1.953rem;
   --text-2xl: 2.441rem;
-  --text-hero: 3.052rem;   /* the single oversized moment on the page */
+  --text-hero: 3.052rem;
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -35,4 +48,5 @@
 
   /* Layout */
   --content-width: 44rem;
+  --radius: 12px;
 }

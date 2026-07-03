@@ -13,6 +13,8 @@
     "@fontsource-variable/archivo": "^5.2.8",
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@fontsource-variable/overpass": "^5.2.8",
-    "astro": "^5.18.2"
+    "@types/three": "^0.185.0",
+    "astro": "^5.18.2",
+    "three": "^0.185.1"
   }
 }

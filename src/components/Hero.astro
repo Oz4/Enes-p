@@ -32,7 +32,10 @@ const chips = [
         </svg>
       </a>
     </div>
-    <a class="scroll-cue" href="#projects">↓ scroll</a>
+    <div class="cue-row">
+      <a class="scroll-cue" href="#projects">↓ scroll</a>
+      <p class="dispatch-hint" aria-hidden="true">click anywhere — dispatch a delivery</p>
+    </div>
   </div>
 </section>
 
@@ -45,34 +48,8 @@ const chips = [
     position: relative;
   }
 
-  /* Static world-grid background — the sim replaces this in Phase 2 */
-  .hero::before {
-    animation: grid-in 0.9s ease-out;
-    background-image:
-      linear-gradient(var(--chunk-line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--chunk-line) 1px, transparent 1px);
-    background-size: 48px 48px;
-    content: '';
-    inset: 0;
-    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, black 30%, transparent 75%);
-    opacity: 0.35;
-    position: absolute;
-    transition: opacity 0.8s;
-  }
-
-  /* Once the canvas sim owns the background, retire the static grid. */
-  :global(html.sim-on) .hero::before {
-    opacity: 0;
-  }
-
-  @keyframes grid-in {
-    from {
-      opacity: 0;
-    }
-  }
-
-  /* Page-load moment: one orchestrated stagger, ≤ 1.2s total.
-     prefers-reduced-motion collapses all of it via global.css. */
+  /* Load moment: content rises as the scene fades up underneath.
+     ≤1.5s total; prefers-reduced-motion collapses it via global.css. */
   @keyframes rise {
     from {
       opacity: 0;
@@ -85,7 +62,7 @@ const chips = [
   .positioning,
   .chip-row,
   .ctas,
-  .scroll-cue {
+  .cue-row {
     animation: rise 0.3s ease-out backwards;
   }
 
@@ -105,28 +82,64 @@ const chips = [
     animation-delay: 0.26s;
   }
 
-  .scroll-cue {
+  .cue-row {
     animation-delay: 0.4s;
   }
 
-  .container {
-    position: relative;
-  }
-
   .role {
-    color: var(--signal);
+    color: var(--trail-amber);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     letter-spacing: 0.05em;
     margin-bottom: var(--space-3);
+    text-shadow: 0 0 14px rgba(255, 180, 84, 0.35);
     text-transform: uppercase;
   }
 
+  /* Identity sheen: one sweep on load, then a very slow drift */
   h1 {
+    background: linear-gradient(
+        100deg,
+        var(--ink) 0%,
+        var(--ink) 38%,
+        var(--neon-violet) 47%,
+        var(--neon-cyan) 53%,
+        var(--ink) 62%,
+        var(--ink) 100%
+      )
+      0 0 / 300% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
     font-size: clamp(var(--text-2xl), 8vw, 4.5rem);
     font-weight: 900;
     letter-spacing: -0.01em;
     margin-bottom: var(--space-3);
+    animation:
+      rise 0.3s ease-out 0.05s backwards,
+      sheen-sweep 1.1s ease-in-out 0.35s backwards,
+      sheen-drift 24s linear 1.5s infinite;
+  }
+
+  @keyframes sheen-sweep {
+    from {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: 0% 0;
+    }
+  }
+
+  @keyframes sheen-drift {
+    from {
+      background-position: 0% 0;
+    }
+    50% {
+      background-position: 100% 0;
+    }
+    to {
+      background-position: 0% 0;
+    }
   }
 
   .positioning {
@@ -156,26 +169,55 @@ const chips = [
 
   .icon-link {
     align-items: center;
-    border: 1px solid var(--chunk-line);
-    border-radius: 4px;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      var(--grad-edge) border-box;
+    border: 1px solid transparent;
+    border-radius: 8px;
     color: var(--ink-dim);
     display: inline-flex;
     justify-content: center;
     height: 2.4rem;
+    transition: box-shadow 0.2s ease-out, color 0.2s ease-out;
     width: 2.4rem;
   }
 
   .icon-link:hover {
-    border-color: var(--signal);
+    box-shadow: 0 0 18px rgba(34, 211, 238, 0.25);
     color: var(--ink);
   }
 
-  .scroll-cue {
+  .cue-row {
+    align-items: center;
     bottom: calc(-1 * var(--space-5));
+    display: flex;
+    gap: var(--space-4);
+    position: absolute;
+  }
+
+  .scroll-cue {
     color: var(--ink-dim);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    position: absolute;
     text-decoration: none;
+  }
+
+  /* Only shown once the WebGL scene is actually interactive */
+  .dispatch-hint {
+    color: var(--ink-dim);
+    display: none;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    margin: 0;
+  }
+
+  .dispatch-hint::before {
+    color: var(--trail-amber);
+    content: '● ';
+    text-shadow: 0 0 10px rgba(255, 180, 84, 0.6);
+  }
+
+  :global(html.scene-on) .dispatch-hint {
+    display: block;
   }
 </style>

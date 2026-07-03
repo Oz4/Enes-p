@@ -111,14 +111,25 @@ const branches = [
   }
 
   .branch {
-    background: var(--panel);
-    border: 1px solid var(--chunk-line);
-    border-radius: 6px;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      var(--grad-edge) border-box;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
     padding: var(--space-3) var(--space-4);
+    transition: box-shadow 0.2s ease-out;
+  }
+
+  .branch:hover {
+    box-shadow: 0 0 24px rgba(139, 92, 246, 0.12);
+  }
+
+  .branch:nth-of-type(even):hover {
+    box-shadow: 0 0 24px rgba(34, 211, 238, 0.12);
   }
 
   h3 {
-    border-bottom: 1px solid var(--chunk-line);
+    border-bottom: 1px solid var(--edge);
     font-size: var(--text-sm);
     margin-bottom: var(--space-3);
     padding-bottom: var(--space-2);
@@ -144,7 +155,7 @@ const branches = [
   }
 
   .node::before {
-    color: var(--signal);
+    color: var(--trail-amber);
     content: '▪ ';
   }
 

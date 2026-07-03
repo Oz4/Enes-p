@@ -1,0 +1,62 @@
+---
+// "Night Delivery Network" WebGL scene container. The static gradient poster
+// below is the no-JS / reduced-motion / no-WebGL fallback; the three.js scene
+// lazy-loads on idle and fades in over it. Pure decoration — aria-hidden,
+// never gates content.
+---
+
+<div class="scene" id="scene-root" aria-hidden="true"></div>
+
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function webglOK(): boolean {
+    try {
+      const c = document.createElement('canvas');
+      return !!(c.getContext('webgl2') || c.getContext('webgl'));
+    } catch {
+      return false;
+    }
+  }
+
+  const start = async () => {
+    const root = document.getElementById('scene-root');
+    if (!root || reduced || !webglOK()) return;
+    const { initScene } = await import('../scene');
+    initScene(root);
+  };
+
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(start, { timeout: 2500 });
+  } else {
+    setTimeout(start, 400);
+  }
+</script>
+
+<style>
+  .scene {
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    position: fixed;
+    z-index: -1;
+    /* static poster: the city glow without the city */
+    background:
+      radial-gradient(ellipse 55% 40% at 28% 32%, rgba(139, 92, 246, 0.1), transparent 70%),
+      radial-gradient(ellipse 50% 38% at 74% 60%, rgba(34, 211, 238, 0.07), transparent 70%),
+      radial-gradient(ellipse 40% 30% at 55% 85%, rgba(255, 180, 84, 0.05), transparent 70%),
+      var(--void);
+  }
+
+  .scene :global(canvas) {
+    display: block;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1.2s ease-out;
+    width: 100%;
+  }
+
+  :global(html.scene-on) .scene :global(canvas) {
+    opacity: 1;
+  }
+</style>

@@ -8,16 +8,14 @@ import SkillsMap from '../components/SkillsMap.astro';
 import QuestLog from '../components/QuestLog.astro';
 import Achievements from '../components/Achievements.astro';
 import Contact from '../components/Contact.astro';
-import SimCanvas from '../components/SimCanvas.astro';
-import ProfilerBar from '../components/ProfilerBar.astro';
-import SandboxPanel from '../components/SandboxPanel.astro';
+import SceneCanvas from '../components/SceneCanvas.astro';
 ---
 
 <Base
   title="Enes Sahin — Senior Unity Engineer"
   description="Senior Unity Engineer — systems, multiplayer, VR. From a 400K-player game built at university to a solo-shipped open-world simulator on Steam."
 >
-  <SimCanvas />
+  <SceneCanvas />
   <Nav />
   <main id="main">
     <Hero />
@@ -31,10 +29,9 @@ import SandboxPanel from '../components/SandboxPanel.astro';
   <footer>
     <div class="container">
       <p>© 2026 Enes Sahin · Ankara, TR</p>
+      <p class="net-line" id="net-line" aria-hidden="true">— delivery network offline —</p>
     </div>
   </footer>
-  <ProfilerBar />
-  <SandboxPanel />
 </Base>
 
 <script>
@@ -43,9 +40,15 @@ import SandboxPanel from '../components/SandboxPanel.astro';
 
 <style>
   footer {
-    border-top: 1px solid var(--chunk-line);
-    /* keep clear of the fixed profiler bar */
-    padding-block: var(--space-4) var(--space-6);
+    border-top: 1px solid var(--edge);
+    padding-block: var(--space-4) var(--space-5);
+  }
+
+  footer .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-4);
+    justify-content: space-between;
   }
 
   footer p {
@@ -53,5 +56,10 @@ import SandboxPanel from '../components/SandboxPanel.astro';
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     margin: 0;
+  }
+
+  .net-line {
+    color: var(--neon-cyan);
+    opacity: 0.7;
   }
 </style>

@@ -59,7 +59,9 @@ const entries = [
   <div class="container reveal">
     <h2 class="section-title"><span class="index">03 /</span> Quest log</h2>
     <p class="lede">Experience, newest first.</p>
-    <ol>
+    <div class="log-wrap">
+      <span class="route-line" aria-hidden="true"></span>
+      <ol>
       {
         entries.map((entry) => (
           <li>
@@ -83,35 +85,68 @@ const entries = [
           </li>
         ))
       }
-    </ol>
+      </ol>
+    </div>
   </div>
 </section>
 
 <style>
-  ol {
-    border-left: 1px solid var(--chunk-line);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-5);
-    list-style: none;
-    margin: 0;
-    padding: 0 0 0 var(--space-4);
-  }
-
-  ol > li {
+  .log-wrap {
     position: relative;
   }
 
-  /* timeline node */
+  /* Glowing route line — draws in when the section reveals */
+  .route-line {
+    background: linear-gradient(180deg, var(--neon-violet), var(--neon-cyan));
+    border-radius: 2px;
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    top: 4px;
+    transform-origin: top;
+    width: 2px;
+  }
+
+  :global(html.js) .reveal .route-line {
+    transform: scaleY(0);
+    transition: transform 1.1s ease-out 0.15s;
+  }
+
+  :global(html.js) .reveal.in .route-line {
+    transform: scaleY(1);
+  }
+
+  ol {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 var(--space-5);
+  }
+
+  ol > li {
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      var(--grad-edge) border-box;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    padding: var(--space-3) var(--space-4);
+    position: relative;
+  }
+
+  /* waypoint node on the route */
   ol > li::before {
-    background: var(--asphalt);
-    border: 1px solid var(--chunk-line);
+    background: var(--void);
+    border: 1px solid var(--neon-cyan);
     border-radius: 50%;
+    box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
     content: '';
     height: 9px;
-    left: calc(-1 * var(--space-4) - 5px);
+    left: calc(-1 * var(--space-5) - 4px);
     position: absolute;
-    top: 6px;
+    top: 22px;
     width: 9px;
   }
 
@@ -124,7 +159,7 @@ const entries = [
   }
 
   .check {
-    color: var(--telemetry);
+    color: var(--neon-cyan);
   }
 
   .period {

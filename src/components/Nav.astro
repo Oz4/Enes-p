@@ -10,7 +10,6 @@ import { SITE } from '../data/site';
       <li><a href="/#skills">Skills</a></li>
       <li><a href="/#timeline">Timeline</a></li>
       <li><a href="/#contact">Contact</a></li>
-      <li><button class="sandbox-btn" id="sandbox-toggle-btn" hidden>Sandbox</button></li>
       <li><a class="cv" href={SITE.cvPath} download>Download CV</a></li>
     </ul>
   </nav>
@@ -18,8 +17,10 @@ import { SITE } from '../data/site';
 
 <style>
   .nav {
-    background: var(--asphalt);
-    border-bottom: 1px solid var(--chunk-line);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background: rgba(6, 6, 8, 0.7);
+    border-bottom: 1px solid var(--edge);
     position: sticky;
     top: 0;
     z-index: 10;
@@ -58,43 +59,32 @@ import { SITE } from '../data/site';
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     text-decoration: none;
+    transition: color 0.15s ease-out, text-shadow 0.15s ease-out;
   }
 
   ul a:hover {
     color: var(--ink);
-  }
-
-  .sandbox-btn {
-    background: none;
-    border: none;
-    color: var(--signal);
-    cursor: pointer;
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    padding: 0;
-  }
-
-  .sandbox-btn:hover {
-    text-decoration: underline;
+    text-shadow: 0 0 12px rgba(139, 92, 246, 0.5);
   }
 
   .cv {
-    border: 1px solid var(--signal);
-    border-radius: 3px;
-    color: var(--signal);
-    padding: 2px var(--space-2);
+    border: 1px solid var(--trail-amber);
+    border-radius: 999px;
+    color: var(--trail-amber);
+    padding: 2px var(--space-3);
+    transition: box-shadow 0.2s ease-out, background 0.2s ease-out, color 0.2s ease-out;
   }
 
   .cv:hover {
-    background: var(--signal);
-    color: var(--asphalt);
+    background: var(--trail-amber);
+    box-shadow: 0 0 20px rgba(255, 180, 84, 0.4);
+    color: var(--void);
+    text-shadow: none;
   }
 
-  /* On small screens the hero's primary CTA covers CV download, and the
-     sandbox needs pointer precision; keep the sticky bar to two rows. */
+  /* On small screens the hero's primary CTA covers CV download */
   @media (max-width: 639px) {
-    .cv,
-    .sandbox-btn {
+    .cv {
       display: none;
     }
   }

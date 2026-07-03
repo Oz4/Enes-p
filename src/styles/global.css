@@ -7,7 +7,7 @@
 }
 
 html {
-  background: var(--asphalt);
+  background: var(--void);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 100%;
@@ -18,6 +18,42 @@ html {
 body {
   margin: 0;
   min-height: 100dvh;
+  position: relative;
+}
+
+/* Subtle violet vignette pinning the page into the night */
+body::after {
+  background: radial-gradient(
+    ellipse 120% 90% at 50% 40%,
+    transparent 55%,
+    rgba(139, 92, 246, 0.05) 78%,
+    rgba(6, 6, 8, 0.55) 100%
+  );
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: 3;
+}
+
+/* Fine animated grain — ~3% opacity, steps() so it flickers not slides */
+body::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  content: '';
+  inset: -60px;
+  opacity: 0.03;
+  pointer-events: none;
+  position: fixed;
+  z-index: 4;
+  animation: grain 0.9s steps(4) infinite;
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-24px, 16px); }
+  50% { transform: translate(18px, -20px); }
+  75% { transform: translate(-12px, -28px); }
+  100% { transform: translate(0, 0); }
 }
 
 h1,
@@ -35,12 +71,12 @@ p {
 }
 
 a {
-  color: var(--signal);
+  color: var(--trail-amber);
 }
 
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--signal);
+  outline: 2px solid var(--neon-cyan);
   outline-offset: 2px;
 }
 
@@ -62,11 +98,35 @@ video {
   margin: 0 auto;
   max-width: 64rem;
   padding-inline: var(--space-4);
+  position: relative;
   width: 100%;
 }
 
 .section {
   padding-block: var(--space-6);
+  position: relative;
+}
+
+/* Soft radial glows behind each section — violet/cyan alternating, 3–6% */
+.section::before {
+  background: radial-gradient(
+    ellipse 60% 55% at 18% 30%,
+    rgba(139, 92, 246, 0.06),
+    transparent 70%
+  );
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+.section:nth-of-type(even)::before {
+  background: radial-gradient(
+    ellipse 60% 55% at 82% 35%,
+    rgba(34, 211, 238, 0.05),
+    transparent 70%
+  );
 }
 
 /* Anchor targets clear the sticky nav */
@@ -80,7 +140,10 @@ video {
 }
 
 .section-title .index {
-  color: var(--ink-dim);
+  background: var(--grad-identity);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-stretch: normal;
@@ -94,15 +157,27 @@ video {
   max-width: 40rem;
 }
 
+/* Glass panel: translucent surface + 1px gradient hairline border */
+.glass {
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    var(--grad-edge) border-box;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+}
+
 .chip {
-  border: 1px solid var(--chunk-line);
-  border-radius: 3px;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    var(--grad-edge) border-box;
+  border: 1px solid transparent;
+  border-radius: 999px;
   color: var(--ink-dim);
   display: inline-block;
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   line-height: 1.4;
-  padding: 2px var(--space-2);
+  padding: 2px var(--space-3);
   white-space: nowrap;
 }
 
@@ -117,35 +192,44 @@ video {
 
 .btn {
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 8px;
   display: inline-block;
   font-family: var(--font-body);
   font-size: var(--text-sm);
   font-weight: 700;
   padding: var(--space-2) var(--space-4);
   text-decoration: none;
+  transition:
+    box-shadow 0.2s ease-out,
+    border-color 0.2s ease-out,
+    filter 0.2s ease-out;
 }
 
 .btn-primary {
-  background: var(--signal);
-  color: var(--asphalt);
+  background: var(--trail-amber);
+  box-shadow: 0 0 18px rgba(255, 180, 84, 0.25);
+  color: var(--void);
 }
 
 .btn-primary:hover {
-  filter: brightness(1.08);
+  box-shadow: 0 0 28px rgba(255, 180, 84, 0.45);
+  filter: brightness(1.06);
 }
 
 .btn-secondary {
-  border-color: var(--chunk-line);
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    var(--grad-edge) border-box;
   color: var(--ink);
 }
 
 .btn-secondary:hover {
-  border-color: var(--signal);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.22);
 }
 
 .skip-link {
-  background: var(--panel);
+  background: var(--void);
+  border: 1px solid var(--edge);
   color: var(--ink);
   left: var(--space-3);
   padding: var(--space-2) var(--space-3);
@@ -156,17 +240,6 @@ video {
 
 .skip-link:focus {
   top: var(--space-3);
-}
-
-/* Sandbox mode: the sim takes the stage; the document waits underneath.
-   Exit (button or Escape) restores everything — the CV is never gated. */
-html.sandbox-on {
-  overflow: hidden;
-}
-
-html.sandbox-on main,
-html.sandbox-on footer {
-  visibility: hidden;
 }
 
 /* Scroll reveals — active only when JS confirmed itself (html.js). */
