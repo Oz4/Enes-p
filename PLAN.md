@@ -122,10 +122,12 @@ Single-page scroll site + separate case-study pages. Sticky minimal nav: `Projec
 ### 3.1 Hero (the 5-second test) — V2 iteration
 Scene running behind (scrim 0). Content, top to bottom, nothing else:
 - **Role eyebrow:** SENIOR UNITY ENGINEER — SYSTEMS · MULTIPLAYER · VR
-- **Name:** Enes Sahin — solid `--ink`, fully stable. Every 6–9s (randomized) a
-  feathered amber-tinted "headlight sweep" passes over the letters once (~1.2s,
-  eased; text-clipped gradient whose base matches --ink). Disabled under
-  prefers-reduced-motion.
+- **Name:** Enes Sahin — solid `--ink`, fully stable. Every 7s a feathered
+  amber band (~20% of the text width) sweeps over the letters once (~1.2s,
+  eased): two stacked layers — base h1 in solid ink, plus an aria-hidden
+  duplicate whose text-clipped gradient carries ONLY the transparent→amber→
+  transparent band (pure CSS loop with a long dwell). Disabled under
+  prefers-reduced-motion (a console note says so during testing).
 - **One line:** "I build game systems that ship and scale."
 - **Proof chips (mono):** `Shipped on Steam` · `400K+ players served` · `VR multiplayer` · `10+ yrs building games`
 - **CTAs:** `Download CV` (primary, amber) · `View projects` (secondary). Contact icons: email, GitHub.
@@ -138,11 +140,15 @@ the active card) and the case-study sheet media strips. The capture checklist in
 ### 3.3 Featured Projects — PS5-style rail (V2)
 Full-bleed horizontal rail with scroll-snap: tall 3:4 cards, large key art /
 trailer video filling each card, bottom gradient scrim with title, one-line
-role, tech chips. Start-aligned: card 1 sits at the container's left content
-edge on load (scroll-snap-align: start, scroll-padding matching the page
-gutter, scroll pinned to 0 after fonts settle). The active (snapped) card
-scales to ~1.05 and plays its video muted; neighbors dim to 60%. Drag,
-trackpad/wheel, arrow keys, visible focus states. Same four projects:
+role, tech chips. A REAL native scroller: flex row, overflow-x auto,
+scroll-snap-type x PROXIMITY (mandatory made far cards unreachable),
+scroll-padding matching the page gutter, and padding-inline-end reserving
+100vw − gutter − card width so the LAST card can align to the start edge.
+Card 1 sits at the container's left content edge on load (scroll pinned to 0
+after fonts settle). The active (snapped) card scales to ~1.05 and plays its
+video muted; neighbors dim to 60%. Drag maps pointer delta to scrollLeft (no
+transforms, no clamps); wheel and arrow keys reach every card. Same four
+projects:
 1. **My Corp Cargo Simulator** (NocturnForge) — Lead / solo-shipped open-world sim, Steam.
 2. **Highstreet Market** — VR multiplayer physics & combat systems.
 3. **HG Idle Arcade Framework + HG Builder** — framework powering 10+ shipped mobile titles + CI/CD tooling.
@@ -166,14 +172,18 @@ Plus a **Tech box** (Steam "system requirements" style, reskinned): engine, lang
 - HG: designing one framework flexible enough to ship 10+ different games; build automation saving 2+ hrs/day.
 - Idle Town: serving 400K registered / 1K concurrent users on PHP + CronJobs + webhooks as a student.
 
-### 3.5 Skills — "Systems Map" (tilted panel composition, V2 iteration)
-Six tall near-black glass panels (one per category) floating like act-selection
-cards: fixed per-panel tilts (rotateY −7°…+7°, rotateZ ±1°) and staggered
-vertical offsets (±16–40px) under container perspective — organized randomness,
-stable across loads. Sharp corners; each panel has its own accent edge light
-(rotating amber / violet / cyan / white): 1px edge + faint one-sided outer glow,
-as if lit from off-screen. Hover/focus straightens the panel and brightens its
-edge. Mobile stacks vertically with tilts reduced to ±2°. Branches: `Unity & Engine` (GameObject, DOTS/ECS, Jobs+Burst, Addressables, profiling) · `Architecture` (composition, DI — Zenject/VContainer, SOLID, modular assemblies) · `Multiplayer` (client-server, replication, prediction, packing/compression) · `VR & Physics` (IK, joints/constraints, interaction) · `AI & Procedural` (FSM, behavior trees, navmesh, procedural roads) · `Backend & Tools` (ASP.NET, MySQL/NoSQL, Firebase, CI/CD, Python). Hover a node → tooltip with 1-line proof ("Used in: Highstreet VR combat"). Every node links to evidence. No fake levels or percentages — proof instead of numbers.
+### 3.5 Skills — "Systems Map" (angular color plates)
+The one deliberately loud moment on the page. Six irregular sharp clip-path
+polygons (quads + a pentagon, edges 2–6° off-axis, each a different FIXED
+shape; adjacent facing edges roughly parallel — deliberate randomness, not
+noise), staggered offsets, rotateY ≤ ±3°. Solid saturated fills from the
+scoped `--plate-*` tokens: Unity=orange #FF7A1A, Architecture=violet #B39DFC,
+Multiplayer=cyan #22D3EE, VR&Physics=magenta #FF66CD, AI&Procedural=acid
+#4ADE4A, Backend=yellow #E8FF47 (violet/magenta lightened from the original
+picks to hold ≥7:1). All text near-black `--plate-ink` (#0B0B10), proof lines
+at 70% black; measured contrast 7.5–17.6:1. No borders, no glow; hover lifts
+5px and brightens 6%. Mobile stacks with shallower cuts. These colors appear
+NOWHERE else — the rest of the site stays dark monochrome + amber. Branches: `Unity & Engine` (GameObject, DOTS/ECS, Jobs+Burst, Addressables, profiling) · `Architecture` (composition, DI — Zenject/VContainer, SOLID, modular assemblies) · `Multiplayer` (client-server, replication, prediction, packing/compression) · `VR & Physics` (IK, joints/constraints, interaction) · `AI & Procedural` (FSM, behavior trees, navmesh, procedural roads) · `Backend & Tools` (ASP.NET, MySQL/NoSQL, Firebase, CI/CD, Python). Hover a node → tooltip with 1-line proof ("Used in: Highstreet VR combat"). Every node links to evidence. No fake levels or percentages — proof instead of numbers.
 
 ### 3.6 Quest Log — experience timeline (boxless, V2 iteration)
 No panels: text sits directly on the page. The glowing route-line spine with
