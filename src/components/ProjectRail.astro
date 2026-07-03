@@ -90,6 +90,13 @@ const thumb = (id: string | undefined) =>
       },
       { passive: true },
     );
+    // Start on the first card: pin scroll to 0 before snap can pick a
+    // neighbor (browsers may restore scroll or snap mid-rail on load).
+    rail.scrollLeft = 0;
+    window.addEventListener('pageshow', () => {
+      rail!.scrollLeft = 0;
+      setActive();
+    });
     setActive();
 
     const markInteracted = () => {
@@ -188,7 +195,8 @@ const thumb = (id: string | undefined) =>
     overflow-x: auto;
     overscroll-behavior-x: contain;
     padding-block: var(--space-4) var(--space-5);
-    padding-inline: max(calc((100vw - 23rem) / 2), var(--space-4));
+    /* must mirror .rail-card width exactly so scrollLeft 0 centers card 1 */
+    padding-inline: max(calc((100vw - min(72vw, 23rem)) / 2), var(--space-4));
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
   }
