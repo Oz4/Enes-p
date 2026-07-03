@@ -1,9 +1,13 @@
 ---
-// Static version of the "Systems Map" (PLAN.md §3.5). Interactive node graph
-// can come later; the content and proof lines are the point.
+// "Systems map" — six tall panels floating in the scene like act-selection
+// cards. Tilts/offsets are FIXED per panel (organized randomness, stable
+// across loads); each panel carries its own accent edge light, as if lit
+// from off-screen. Content and proof lines unchanged.
 const branches = [
   {
     name: 'Unity & Engine',
+    pose: '--ry:-7deg; --rz:0.8deg; --dy:-16px; --ry-m:-2deg; --dx:-10px; --side:-1',
+    accent: 'var(--trail-amber)',
     nodes: [
       { label: 'GameObject architecture' },
       { label: 'DOTS / ECS' },
@@ -14,6 +18,8 @@ const branches = [
   },
   {
     name: 'Architecture',
+    pose: '--ry:5deg; --rz:-0.6deg; --dy:28px; --ry-m:2deg; --dx:10px; --side:1',
+    accent: 'var(--neon-violet)',
     nodes: [
       { label: 'Composition over inheritance' },
       { label: 'DI — Zenject / VContainer' },
@@ -23,6 +29,8 @@ const branches = [
   },
   {
     name: 'Multiplayer',
+    pose: '--ry:-4deg; --rz:0.4deg; --dy:-36px; --ry-m:-2deg; --dx:-8px; --side:-1',
+    accent: 'var(--neon-cyan)',
     nodes: [
       { label: 'Client-server model' },
       { label: 'Replication', proof: 'Highstreet VR multiplayer' },
@@ -32,6 +40,8 @@ const branches = [
   },
   {
     name: 'VR & Physics',
+    pose: '--ry:7deg; --rz:-1deg; --dy:20px; --ry-m:2deg; --dx:12px; --side:1',
+    accent: 'var(--ink)',
     nodes: [
       { label: 'IK' },
       { label: 'Joints & constraints', proof: 'Highstreet VR combat' },
@@ -40,6 +50,8 @@ const branches = [
   },
   {
     name: 'AI & Procedural',
+    pose: '--ry:-6deg; --rz:0.7deg; --dy:40px; --ry-m:-2deg; --dx:-12px; --side:-1',
+    accent: 'var(--trail-amber)',
     nodes: [
       { label: 'FSM', proof: 'Cargo Simulator delivery agents' },
       { label: 'Behavior trees' },
@@ -49,6 +61,8 @@ const branches = [
   },
   {
     name: 'Backend & Tools',
+    pose: '--ry:4deg; --rz:-0.5deg; --dy:-24px; --ry-m:2deg; --dx:8px; --side:1',
+    accent: 'var(--neon-violet)',
     nodes: [
       { label: 'ASP.NET' },
       { label: 'MySQL / NoSQL' },
@@ -67,10 +81,10 @@ const branches = [
       No levels, no percentages. Where it matters, a node points at the shipped work that
       proves it.
     </p>
-    <div class="branches">
+    <div class="stage">
       {
         branches.map((branch) => (
-          <article class="branch">
+          <article class="panel" style={`${branch.pose}; --accent:${branch.accent}`}>
             <h3>{branch.name}</h3>
             <ul>
               {branch.nodes.map((node) => (
@@ -89,44 +103,59 @@ const branches = [
 
 <style>
   .lede {
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--space-5);
   }
 
-  .branches {
+  .stage {
     display: grid;
-    gap: var(--space-3);
+    gap: var(--space-4);
     grid-template-columns: 1fr;
+    perspective: 1400px;
   }
 
-  @media (min-width: 640px) {
-    .branches {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .branches {
+  @media (min-width: 768px) {
+    .stage {
+      gap: var(--space-4) var(--space-3);
       grid-template-columns: 1fr 1fr 1fr;
+      padding-block: var(--space-5);
     }
   }
 
-  .branch {
-    background:
-      linear-gradient(var(--surface), var(--surface)) padding-box,
-      var(--grad-edge) border-box;
-    border: 1px solid transparent;
-    border-radius: var(--radius);
-    padding: var(--space-3) var(--space-4);
+  .panel {
+    background: var(--surface);
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    border-radius: 0;
+    /* lit from off-screen: faint one-sided outer glow in the accent */
+    box-shadow: calc(var(--side) * 14px) 0 32px -18px var(--accent);
+    padding: var(--space-4);
+    transition:
+      transform 0.3s ease-out,
+      border-color 0.3s ease-out,
+      box-shadow 0.3s ease-out;
   }
 
-  .branch:hover {
-    background:
-      linear-gradient(var(--surface), var(--surface)) padding-box,
-      var(--grad-edge-lit) border-box;
+  @media (min-width: 768px) {
+    .panel {
+      transform: translateY(var(--dy)) rotateY(var(--ry)) rotateZ(var(--rz));
+    }
+
+    .panel:hover,
+    .panel:focus-within {
+      border-color: color-mix(in srgb, var(--accent) 85%, transparent);
+      box-shadow: calc(var(--side) * 18px) 0 38px -16px var(--accent);
+      transform: translateY(calc(var(--dy) - 6px)) rotateY(0deg) rotateZ(0deg);
+    }
+  }
+
+  /* Mobile: stacked, tilts reduced to ±2°, small alternating x-offsets */
+  @media (max-width: 767px) {
+    .panel {
+      transform: translateX(var(--dx)) rotateY(var(--ry-m));
+    }
   }
 
   h3 {
-    border-bottom: 1px solid var(--edge);
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
     font-size: var(--text-sm);
     margin-bottom: var(--space-3);
     padding-bottom: var(--space-2);
@@ -152,7 +181,7 @@ const branches = [
   }
 
   .node::before {
-    color: var(--trail-amber);
+    color: var(--accent);
     content: '▪ ';
   }
 
