@@ -26,20 +26,36 @@ polish, never at the cost of readability or the performance budget.
 | Token | Value | Role |
 |---|---|---|
 | `--void` | `#060608` | Base background (never pure black) |
-| `--surface` | `rgba(255,255,255,0.03)` | Glass panels (with 1px gradient borders via `--grad-edge`) |
+| `--surface` | near-opaque near-black (≈3% white over void) | Glass panel fill — must mask the lit-edge gradient outside the 1px ring |
 | `--edge` | `rgba(255,255,255,0.08)` | Hairline borders |
 | `--ink` | `#F2F3F7` | Primary text — high contrast, glow-free |
 | `--ink-dim` | `#8B90A0` | Secondary text, labels |
 | `--trail-amber` | `#FFB454` | Light trails, primary CTA |
-| `--trail-crimson` | `#FF3B5C` | Taillights — rare accents only |
-| `--neon-violet` | `#8B5CF6` | Identity gradient + glows |
-| `--neon-cyan` | `#22D3EE` | Identity gradient + live readouts |
-| `--grad-identity` | violet → cyan | Display-type sheen, key edges |
+| `--neon-violet` | `#8B5CF6` | Flat accent (section numbers, prose labels) + scene rims |
+| `--neon-cyan` | `#22D3EE` | Live readouts + the dispatch pulse ONLY |
+| `--grad-identity` | violet → cyan | Hero name sheen ONLY |
+| `--grad-edge` | white 0.38 → 0.06 @45% → violet 0.18 | The standard "lit edge" 1px border on all glass |
 
-### Light system
-Soft radial glows behind each section (violet/cyan at 3–6% opacity), a subtle
-violet vignette, a fine animated grain overlay at ~3% opacity, glow-on-hover on
-interactive elements. Body text stays high-contrast and glow-free.
+### Light system — "less color, more light"
+Cinematic hierarchy: mostly darkness, few bright sources. The standard surface
+is near-black glass with a 1px **lit edge** border (white catching light at the
+top-left corner, dying to violet at the bottom-right) — the only gradients in
+the UI are these borders and the hero name sheen. Hover = the lit corner
+brightens (~0.55 white) plus one 600ms sheen sweep; no glow blobs. Soft radial
+glows behind sections (3–6%), fine animated grain (~3%), vignette rendered
+*under* the content so frame edges fall to black without dimming text. The
+primary CTA is solid amber — the single saturated UI element; section numbers
+are flat violet. Body text stays high-contrast (≥7:1) and glow-free.
+
+### Scroll-fade scrim (scene recedes on scroll)
+A solid `--void` scrim between the WebGL canvas and the content, driven by a
+rAF-throttled scroll listener via `--scrim-o`: 0 over the hero (scene fully
+visible), smoothstep to 0.8 by one viewport of scroll, held for the page, then
+easing back to 0.5 behind Contact so the network resurfaces under the final
+CTA. Scroll-linked (no tween) so reduced-motion needs no special case. While
+scrim ≥ 0.75 the scene sheds work (half trail spawn rate, bloom skipped);
+click-to-dispatch only accepts clicks while scrim < 0.2 — background clicks
+elsewhere belong to the document.
 
 ### Typography (unchanged)
 Archivo (Expanded 700–900) display · Overpass body · JetBrains Mono utility.
@@ -67,8 +83,12 @@ visible through the page. Replaces the V1 Canvas-2D sim and sandbox mode
 **Behavior:**
 1. Dark ground plane, faint city grid, instanced dark blocks; a procedural
    route network generated from deterministic edge hashes (L-shaped blocks).
-2. Glowing light trails flow along routes — amber streams with occasional
-   crimson/cyan — rendered as additive shader sprites (head + fading tail).
+2. Glowing light trails flow along routes — amber only, the brightest element
+   in the frame — rendered as additive shader sprites (head + fading tail).
+   Buildings are near-black volumes with thin violet rim lines (top edges
+   brighter); FogExp2 fades everything with distance; cyan appears only as
+   the dispatch arrival pulse. Trail starts are biased toward the hero
+   framing so 2–3 trails stay visible on first glance.
 3. Slow ambient camera drift; mouse parallax capped at ~2°.
 4. **Dispatch interaction:** clicking/tapping the background routes a bright
    streak from the click point through the network to a depot, pulsing on
