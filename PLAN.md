@@ -122,12 +122,14 @@ Single-page scroll site + separate case-study pages. Sticky minimal nav: `Projec
 ### 3.1 Hero (the 5-second test) — V2 iteration
 Scene running behind (scrim 0). Content, top to bottom, nothing else:
 - **Role eyebrow:** SENIOR UNITY ENGINEER — SYSTEMS · MULTIPLAYER · VR
-- **Name:** Enes Sahin — solid `--ink`, fully stable. Every 7s a feathered
-  amber band (~20% of the text width) sweeps over the letters once (~1.2s,
-  eased): two stacked layers — base h1 in solid ink, plus an aria-hidden
-  duplicate whose text-clipped gradient carries ONLY the transparent→amber→
-  transparent band (pure CSS loop with a long dwell). Disabled under
-  prefers-reduced-motion (a console note says so during testing).
+- **Name:** Enes Sahin — a neon sign in three SVG text layers (sr-only span
+  keeps the h1 accessible): base white 92%; tube glow (blur(14px) warm copy
+  breathing ±6% on a 4s cycle); outline spark (60-unit amber dash traveling
+  the glyph outlines once per 6s cycle, ~1s per trip). Power-on flicker once
+  per visit (3 irregular snaps in 0.9s). Every 10–15s ONE random letter dips
+  to 40% for 120ms (skipped during the spark window). Letters never move or
+  change hue — all motion is opacity/filter. Reduced motion: static white +
+  constant soft glow, with a console note during testing.
 - **One line:** "I build game systems that ship and scale."
 - **Proof chips (mono):** `Shipped on Steam` · `400K+ players served` · `VR multiplayer` · `10+ yrs building games`
 - **CTAs:** `Download CV` (primary, amber) · `View projects` (secondary). Contact icons: email, GitHub.
@@ -172,19 +174,24 @@ Plus a **Tech box** (Steam "system requirements" style, reskinned): engine, lang
 - HG: designing one framework flexible enough to ship 10+ different games; build automation saving 2+ hrs/day.
 - Idle Town: serving 400K registered / 1K concurrent users on PHP + CronJobs + webhooks as a student.
 
-### 3.5 Skills — "Systems Map" (angular color plates)
-The one deliberately loud moment on the page. Six 5-6 sided sharp clip-path
-polygons (chamfered hexagon family) built from ONE shared slope system —
-vertical edges lean −3% top→bottom, horizontal edges +2% left→right, one
-chamfer angle family — so adjacent plates' facing edges are parallel and the
-composition reads organized, not noisy. Staggered offsets, rotateY ≤ ±3°.
-FOUR colors across six plates (scoped `--plate-*` tokens, no two neighbors
-alike): vibrant purple #7C3AED (Architecture, VR&Physics — white text),
-orange #FF7A1A (Unity, Backend — dark text), yellow #FFD60A (AI&Procedural —
-dark text), darker blue #1E40AF (Multiplayer — white text). Measured contrast
-5.1–13.9:1. No borders, no glow; hover lifts 5px and brightens 6%. Mobile
-stacks with shallower cuts. These colors appear NOWHERE else — the rest of
-the site stays dark monochrome + amber. Branches: `Unity & Engine` (GameObject, DOTS/ECS, Jobs+Burst, Addressables, profiling) · `Architecture` (composition, DI — Zenject/VContainer, SOLID, modular assemblies) · `Multiplayer` (client-server, replication, prediction, packing/compression) · `VR & Physics` (IK, joints/constraints, interaction) · `AI & Procedural` (FSM, behavior trees, navmesh, procedural roads) · `Backend & Tools` (ASP.NET, MySQL/NoSQL, Firebase, CI/CD, Python). Hover a node → tooltip with 1-line proof ("Used in: Highstreet VR combat"). Every node links to evidence. No fake levels or percentages — proof instead of numbers.
+### 3.5 Skills — "Systems Map" (shared-seam mosaic)
+The one deliberately loud moment on the page. ONE master panel (976×520
+reference, aspect-locked) sliced into six plates by SHARED seam lines: two
+vertical seams tilted +6°/−7° (opposite directions), one horizontal seam at
+2.5°, outer boundary at 1.7° — no axis-aligned edge, no 90° corner anywhere;
+adjacent edges are exactly parallel because neighbors share seams (honeycomb
+logic). All geometry derives at build time from one named SEAM constants
+block in `SkillsMap.astro` (positions, tilts, 8px centroid inset for even
+gutters, 28px text-safety) — tune the composition by editing those numbers.
+Per-plate clip-aware padding (worst-case edge recession + safety) keeps text
+clear of every angled edge, and plate typography + padding use container-
+query units so the whole system scales as one at any width ≥768px.
+Fills come from the hand-tunable scoped `--plate-*` tokens; text color
+adapts per plate (white on dark fills, `--plate-ink` near-black on bright
+fills) to hold ≥4.5:1. No borders, no glow; hover lifts 4px and brightens
+5%. Mobile (<768px) stacks full-width parallelograms (±2° alternating).
+Plate colors appear NOWHERE else — the rest of the site stays dark
+monochrome + amber. Branches: `Unity & Engine` (GameObject, DOTS/ECS, Jobs+Burst, Addressables, profiling) · `Architecture` (composition, DI — Zenject/VContainer, SOLID, modular assemblies) · `Multiplayer` (client-server, replication, prediction, packing/compression) · `VR & Physics` (IK, joints/constraints, interaction) · `AI & Procedural` (FSM, behavior trees, navmesh, procedural roads) · `Backend & Tools` (ASP.NET, MySQL/NoSQL, Firebase, CI/CD, Python). Hover a node → tooltip with 1-line proof ("Used in: Highstreet VR combat"). Every node links to evidence. No fake levels or percentages — proof instead of numbers.
 
 ### 3.6 Quest Log — experience timeline (boxless, V2 iteration)
 No panels: text sits directly on the page. The glowing route-line spine with

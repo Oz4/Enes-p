@@ -98,13 +98,16 @@ const geo: PlateGeo[] = cellEdges.map((ls) => {
   const padB = Math.round((sy[3] as number) - (sy[2] as number) + SEAM.safePx);
   const padL = Math.round((sx[1] as number) - (sx[0] as number) + SEAM.safePx);
   const padR = Math.round((sx[3] as number) - (sx[2] as number) + SEAM.safePx);
+  // paddings in container-query units so the whole system — plate, type,
+  // and safety margins — scales as one (values are px at the 976 reference)
+  const cq = (px: number) => `${((px / W) * 100).toFixed(3)}cqi`;
   return {
     leftPct: ((minX / W) * 100).toFixed(2),
     topPct: ((minY / H) * 100).toFixed(2),
     widthPct: ((bw / W) * 100).toFixed(2),
     heightPct: ((bh / H) * 100).toFixed(2),
     clip,
-    padding: `${padT}px ${padR}px ${padB}px ${padL}px`,
+    padding: `${cq(padT)} ${cq(padR)} ${cq(padB)} ${cq(padL)}`,
   };
 });
 
@@ -115,6 +118,7 @@ const branches = [
   {
     name: 'Unity & Engine',
     fill: 'var(--plate-orange)',
+    text: 'var(--plate-ink)',
     compact: true,
     nodes: [
       { label: 'GameObject architecture' },
@@ -127,6 +131,7 @@ const branches = [
   {
     name: 'Architecture',
     fill: 'var(--plate-violet)',
+    text: 'rgba(255, 255, 255, 1)',
     compact: true,
     nodes: [
       { label: 'Composition over inheritance' },
@@ -137,7 +142,8 @@ const branches = [
   },
   {
     name: 'Multiplayer',
-    fill: 'var(--plate-cobalt)',
+    fill: 'var(--plate-teal)',
+    text: 'var(--plate-ink)',
     compact: false,
     nodes: [
       { label: 'Client-server model' },
@@ -149,6 +155,7 @@ const branches = [
   {
     name: 'VR & Physics',
     fill: 'var(--plate-magenta)',
+    text: 'rgba(255, 255, 255, 1)',
     compact: false,
     nodes: [
       { label: 'IK' },
@@ -159,6 +166,7 @@ const branches = [
   {
     name: 'AI & Procedural',
     fill: 'var(--plate-green)',
+    text: 'var(--plate-ink)',
     compact: true,
     nodes: [
       { label: 'FSM', proof: 'Cargo Simulator delivery agents' },
@@ -169,7 +177,8 @@ const branches = [
   },
   {
     name: 'Backend & Tools',
-    fill: 'var(--plate-teal)',
+    fill: 'var(--plate-cobalt)',
+    text: 'rgba(255, 255, 255, 1)',
     compact: true,
     nodes: [
       { label: 'ASP.NET' },
@@ -196,7 +205,7 @@ const branches = [
           return (
             <article
               class:list={['plate', { compact: branch.compact }]}
-              style={`--fill:${branch.fill}; --l:${g.leftPct}%; --t:${g.topPct}%; --w:${g.widthPct}%; --h:${g.heightPct}%; --clip:polygon(${g.clip}); --pad:${g.padding}`}
+              style={`--fill:${branch.fill}; --text:${branch.text}; --l:${g.leftPct}%; --t:${g.topPct}%; --w:${g.widthPct}%; --h:${g.heightPct}%; --clip:polygon(${g.clip}); --pad:${g.padding}`}
             >
               <h3>{branch.name}</h3>
               <ul>
@@ -224,6 +233,7 @@ const branches = [
   @media (min-width: 768px) {
     .mosaic {
       aspect-ratio: 976 / 520;
+      container-type: inline-size;
       position: relative;
       width: 100%;
     }
@@ -269,12 +279,13 @@ const branches = [
   }
 
   h3 {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-    color: rgba(255, 255, 255, 1);
+    border-bottom: 1px solid color-mix(in srgb, var(--text) 40%, transparent);
+    color: var(--text);
     font-size: 0.875rem;
     margin-bottom: var(--space-2);
     padding-bottom: 6px;
   }
+
 
   ul {
     display: flex;
@@ -291,7 +302,7 @@ const branches = [
   }
 
   .node {
-    color: rgba(255, 255, 255, 0.95);
+    color: color-mix(in srgb, var(--text) 95%, transparent);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     line-height: 1.4;
@@ -302,29 +313,48 @@ const branches = [
   }
 
   .proof {
-    color: rgba(255, 255, 255, 0.78);
+    color: color-mix(in srgb, var(--text) 78%, transparent);
     font-size: var(--text-xs);
     line-height: 1.35;
     padding-left: var(--space-3);
   }
 
-  /* one step down for lists that would otherwise crowd their polygon */
+  /* one step down for lists that would otherwise crowd their polygon
+     (sizes live in the cqi block above) */
   @media (min-width: 768px) {
     .compact .node {
-      font-size: 11px;
       line-height: 1.3;
-    }
-
-    .compact .proof {
-      font-size: 11px;
-    }
-
-    .compact ul {
-      gap: 3px;
     }
 
     .compact h3 {
       margin-bottom: var(--space-1);
+    }
+  }
+
+  /* Inside the mosaic, type tracks the panel width (14px/12.8px/11px at
+     the 976px reference) so plates never outgrow their polygons as the
+     panel scales down between breakpoints. */
+  @media (min-width: 768px) {
+    h3 {
+      font-size: 1.44cqi;
+    }
+
+    .node,
+    .proof {
+      font-size: 1.31cqi;
+    }
+
+    ul {
+      gap: 0.41cqi;
+    }
+
+    .compact .node,
+    .compact .proof {
+      font-size: 1.13cqi;
+    }
+
+    .compact ul {
+      gap: 0.31cqi;
     }
   }
 </style>

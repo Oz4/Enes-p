@@ -57,15 +57,16 @@
 
   /* Systems-map plate palette — EXCLUSIVE to the skills section, the one
      deliberately loud moment. Never use these elsewhere; the rest of the
-     site stays dark monochrome + amber. Six fills, one per plate, ALL
-     carrying white text. Green/orange darkened from the art-direction
-     picks (#0E9F5B, #EA580C) to hold ≥4.5:1 against white. */
+     site stays dark monochrome + amber. Values hand-tuned by Enes/user.
+     Text color adapts per plate: white on violet/cobalt, --plate-ink on
+     the bright fills (magenta/green/orange/yellow) for ≥4.5:1. */
   --plate-violet: #7925ff;
   --plate-magenta: #ff017c;
   --plate-green: #00ff88;
-  --plate-cobalt: #1654ff;
-  --plate-orange: #ff7e4a;
-  --plate-teal: #ffff00;
+  --plate-cobalt: #ff7e4a;
+  --plate-orange: #00ff88;
+  --plate-teal: #00ff88; /* despite the name: tuned to yellow */
+  --plate-ink: #0b0b10; /* dark text on bright fills */
 
   /* Layout */
   --content-width: 44rem;
