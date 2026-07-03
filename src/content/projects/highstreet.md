@@ -4,6 +4,10 @@ studio: 'Highstreet'
 period: '2023–2025'
 art: '/media/highstreet-key-art.svg'
 summary: 'VR multiplayer physics and combat systems as Senior Engineer.'
+order: 2
+roleLine: 'Senior Engineer · VR multiplayer physics'
+chips: ['Unity', 'VR', 'Multiplayer']
+trailer: 'O2W0N3uKXmo'
 tech:
   engine: 'Unity'
   language: 'C#'

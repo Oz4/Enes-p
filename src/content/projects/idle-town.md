@@ -4,6 +4,10 @@ studio: 'Solo project'
 period: '2017'
 art: '/media/idle-town-key-art.svg'
 summary: 'Asynchronous multiplayer Telegram game — 400K registered users, built solo before graduation.'
+order: 4
+roleLine: 'Solo · built before graduation'
+chips: ['PHP', 'MySQL', 'Webhooks']
+trailer: 'MmB9b5njVbA'
 tech:
   engine: '— (no game engine)'
   language: 'PHP'

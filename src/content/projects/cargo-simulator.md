@@ -4,6 +4,10 @@ studio: 'NocturnForge'
 period: '2025–2026'
 art: '/media/cargo-key-art.svg'
 summary: 'Open-world cargo simulator, designed, built, and shipped solo on Steam.'
+order: 1
+roleLine: 'NocturnForge · Lead, solo-shipped on Steam'
+chips: ['Unity', 'C#', 'Addressables']
+trailer: 'tCI396HyhbQ'
 tech:
   engine: 'Unity'
   language: 'C#'
