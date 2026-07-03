@@ -1,0 +1,65 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Enes Sahin — Senior Unity Engineer"
+  description="Senior Unity Engineer — systems, multiplayer, VR. Portfolio under construction."
+>
+  <main>
+    <h1>Enes Sahin</h1>
+    <p class="role">Senior Unity Engineer — Systems · Multiplayer · VR</p>
+    <p class="status"><span class="indicator" aria-hidden="true"></span>deploy pipeline online — phase 0 of 5</p>
+    <p class="note">Full site in progress. Contact and case studies land in phase 1.</p>
+  </main>
+</Base>
+
+<style>
+  main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: var(--content-width);
+    margin: 0 auto;
+    min-height: 100dvh;
+    padding: var(--space-5) var(--space-4);
+  }
+
+  h1 {
+    font-size: var(--text-hero);
+    margin-bottom: var(--space-2);
+  }
+
+  .role {
+    color: var(--ink);
+    font-size: var(--text-md);
+    margin-bottom: var(--space-4);
+  }
+
+  .status {
+    align-items: center;
+    border: 1px solid var(--chunk-line);
+    background: var(--panel);
+    border-radius: 4px;
+    color: var(--telemetry);
+    display: inline-flex;
+    gap: var(--space-2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: var(--space-2) var(--space-3);
+    width: fit-content;
+  }
+
+  .indicator {
+    background: var(--telemetry);
+    border-radius: 50%;
+    height: 8px;
+    width: 8px;
+  }
+
+  .note {
+    color: var(--ink-dim);
+    font-size: var(--text-sm);
+    margin-top: var(--space-3);
+  }
+</style>

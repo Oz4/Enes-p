@@ -1,0 +1,68 @@
+/* Base document styles. All values come from tokens.css. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--asphalt);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 100%;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-stretch: expanded;
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 var(--space-3);
+}
+
+p {
+  margin: 0 0 var(--space-3);
+}
+
+a {
+  color: var(--signal);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+code,
+kbd,
+samp {
+  font-family: var(--font-mono);
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

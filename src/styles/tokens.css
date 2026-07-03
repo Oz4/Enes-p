@@ -1,0 +1,38 @@
+/* Design tokens — single source of truth (PLAN.md §1).
+   Components must reference these variables; no hardcoded hex elsewhere. */
+
+:root {
+  /* Color */
+  --asphalt: #1a1c1e;      /* base background — deep warm gray, not pure black */
+  --panel: #26292c;        /* cards, panels — Unity-editor gray family */
+  --chunk-line: #3a4148;   /* grid lines, borders, world-grid overlay */
+  --ink: #e8eaed;          /* primary text */
+  --ink-dim: #9aa0a6;      /* secondary text, labels */
+  --signal: #f5a623;       /* primary accent: CTAs, active states, sim entities */
+  --telemetry: #4ade9c;    /* secondary accent: live data readouts ONLY */
+
+  /* Typography */
+  --font-display: 'Archivo Variable', 'Archivo', sans-serif; /* Expanded 700–900: section titles + hero name only */
+  --font-body: 'Overpass Variable', 'Overpass', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', 'JetBrains Mono', monospace;
+
+  /* Type scale — 1.25 ratio */
+  --text-xs: 0.8rem;
+  --text-sm: 1rem;
+  --text-md: 1.25rem;
+  --text-lg: 1.563rem;
+  --text-xl: 1.953rem;
+  --text-2xl: 2.441rem;
+  --text-hero: 3.052rem;   /* the single oversized moment on the page */
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.5rem;
+  --space-6: 4rem;
+
+  /* Layout */
+  --content-width: 44rem;
+}
