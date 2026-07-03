@@ -2,6 +2,7 @@
 title: 'HG Idle Arcade Framework + HG Builder'
 studio: 'Hero Games'
 period: '2021–2023'
+art: '/media/hero-games-key-art.svg'
 summary: 'One framework powering 10+ shipped mobile titles, plus CI/CD tooling that saved 2+ hours daily.'
 tech:
   engine: 'Unity'

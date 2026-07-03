@@ -8,6 +8,7 @@ const projects = defineCollection({
     studio: z.string(),
     period: z.string(),
     summary: z.string(),
+    art: z.string().optional(),
     tech: z.object({
       engine: z.string(),
       language: z.string(),

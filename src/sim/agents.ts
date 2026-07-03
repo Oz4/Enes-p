@@ -70,23 +70,26 @@ function dispatch(grid: Grid, fleet: Fleet, agent: Agent): boolean {
   return true;
 }
 
+export function spawnOne(grid: Grid, fleet: Fleet, home: Chunk): void {
+  const p = center(grid, home);
+  fleet.agents.push({
+    x: p.x,
+    y: p.y,
+    angle: 0,
+    speed: 32 + Math.random() * 26,
+    state: 'idle',
+    wait: Math.random() * 3,
+    path: [],
+    seg: 0,
+    segT: 0,
+    pathChunks: new Set(),
+    at: home,
+  });
+}
+
 export function spawnAgents(grid: Grid, fleet: Fleet): void {
   while (fleet.agents.length < fleet.cap && fleet.depots.length >= 2) {
-    const home = fleet.depots[Math.floor(Math.random() * fleet.depots.length)] as Chunk;
-    const p = center(grid, home);
-    fleet.agents.push({
-      x: p.x,
-      y: p.y,
-      angle: 0,
-      speed: 32 + Math.random() * 26,
-      state: 'idle',
-      wait: Math.random() * 3,
-      path: [],
-      seg: 0,
-      segT: 0,
-      pathChunks: new Set(),
-      at: home,
-    });
+    spawnOne(grid, fleet, fleet.depots[Math.floor(Math.random() * fleet.depots.length)] as Chunk);
   }
 }
 

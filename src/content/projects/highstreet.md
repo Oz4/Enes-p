@@ -2,6 +2,7 @@
 title: 'Highstreet Market'
 studio: 'Highstreet'
 period: '2023–2025'
+art: '/media/highstreet-key-art.svg'
 summary: 'VR multiplayer physics and combat systems as Senior Engineer.'
 tech:
   engine: 'Unity'

@@ -4,6 +4,10 @@ import '@fontsource-variable/overpass';
 import '@fontsource-variable/jetbrains-mono';
 import '../styles/tokens.css';
 import '../styles/global.css';
+// Preload the latin subsets the hero paints with — they gate LCP.
+import archivoUrl from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
+import overpassUrl from '@fontsource-variable/overpass/files/overpass-latin-wght-normal.woff2?url';
+import monoUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -21,6 +25,9 @@ const { title, description } = Astro.props;
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#1a1c1e" />
+    <link rel="preload" as="font" type="font/woff2" href={archivoUrl} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={overpassUrl} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={monoUrl} crossorigin />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
     <meta property="og:title" content={title} />

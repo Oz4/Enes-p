@@ -10,6 +10,7 @@ import { SITE } from '../data/site';
       <li><a href="/#skills">Skills</a></li>
       <li><a href="/#timeline">Timeline</a></li>
       <li><a href="/#contact">Contact</a></li>
+      <li><button class="sandbox-btn" id="sandbox-toggle-btn" hidden>Sandbox</button></li>
       <li><a class="cv" href={SITE.cvPath} download>Download CV</a></li>
     </ul>
   </nav>
@@ -63,6 +64,20 @@ import { SITE } from '../data/site';
     color: var(--ink);
   }
 
+  .sandbox-btn {
+    background: none;
+    border: none;
+    color: var(--signal);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    padding: 0;
+  }
+
+  .sandbox-btn:hover {
+    text-decoration: underline;
+  }
+
   .cv {
     border: 1px solid var(--signal);
     border-radius: 3px;
@@ -75,10 +90,11 @@ import { SITE } from '../data/site';
     color: var(--asphalt);
   }
 
-  /* On small screens the hero's primary CTA covers CV download;
-     keep the sticky bar to two compact rows. */
+  /* On small screens the hero's primary CTA covers CV download, and the
+     sandbox needs pointer precision; keep the sticky bar to two rows. */
   @media (max-width: 639px) {
-    .cv {
+    .cv,
+    .sandbox-btn {
       display: none;
     }
   }

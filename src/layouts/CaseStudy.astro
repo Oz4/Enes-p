@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, studio, period, summary, tech } = project.data;
+const { title, studio, period, summary, tech, art } = project.data;
 ---
 
 <Base title={`${title} — Enes Sahin`} description={summary}>
@@ -20,6 +20,7 @@ const { title, studio, period, summary, tech } = project.data;
         <p class="crumb"><a href="/#projects">← All projects</a></p>
         <h1>{title}</h1>
         <p class="meta">{studio} · {period}</p>
+        {art && <img class="key-art" src={art} alt="" width="840" height="400" loading="eager" />}
       </header>
       <div class="body">
         <div class="prose">
@@ -56,7 +57,16 @@ const { title, studio, period, summary, tech } = project.data;
     color: var(--signal);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-4);
+  }
+
+  .key-art {
+    border: 1px solid var(--chunk-line);
+    border-radius: 6px;
+    display: block;
+    height: auto;
+    margin-bottom: var(--space-4);
+    width: 100%;
   }
 
   .body {

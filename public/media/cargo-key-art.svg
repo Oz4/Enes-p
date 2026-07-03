@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 200" font-family="monospace">
+  <rect width="420" height="200" fill="#1a1c1e"/>
+  <g stroke="#3a4148" stroke-width="1" opacity="0.5">
+    <path d="M70 0v200M140 0v200M210 0v200M280 0v200M350 0v200M0 50h420M0 100h420M0 150h420"/>
+  </g>
+  <g stroke="#3a4148" stroke-width="1.5" opacity="0.9" fill="none">
+    <rect x="72" y="52" width="66" height="46"/><rect x="212" y="102" width="66" height="46"/><rect x="282" y="2" width="66" height="46"/>
+  </g>
+  <g stroke="#565e66" stroke-width="2.5" fill="none">
+    <path d="M0 75h105v50h140v-100h105v75h70"/>
+    <path d="M105 75v-75M245 125v75M350 100v100"/>
+  </g>
+  <g fill="#f5a623">
+    <rect x="150" y="121" width="12" height="6"/>
+    <rect x="240" y="60" width="6" height="12"/>
+    <rect x="330" y="96" width="12" height="6"/>
+  </g>
+  <g stroke="#f5a623" stroke-width="1.5" fill="none">
+    <rect x="98" y="68" width="14" height="14"/>
+    <rect x="343" y="93" width="14" height="14" opacity="0.7"/>
+  </g>
+  <text x="14" y="186" fill="#9aa0a6" font-size="10">chunk_streaming :: procedural_roads :: delivery_agents</text>
+  <text x="14" y="24" fill="#4ade9c" font-size="10">world 24/24 loaded</text>
+</svg>

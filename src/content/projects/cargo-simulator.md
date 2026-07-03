@@ -2,6 +2,7 @@
 title: 'My Corp Cargo Simulator'
 studio: 'NocturnForge'
 period: '2025–2026'
+art: '/media/cargo-key-art.svg'
 summary: 'Open-world cargo simulator, designed, built, and shipped solo on Steam.'
 tech:
   engine: 'Unity'

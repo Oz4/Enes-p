@@ -29,4 +29,10 @@
     width: 100vw;
     z-index: -1;
   }
+
+  :global(html.sandbox-on) canvas {
+    cursor: crosshair;
+    pointer-events: auto;
+    z-index: 0;
+  }
 </style>

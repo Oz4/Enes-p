@@ -10,13 +10,19 @@ export interface Pt {
   y: number;
 }
 
+export interface EdgeRef {
+  ex: number;
+  ey: number;
+  vertical: number;
+  border: boolean;
+  key: string;
+}
+
 /**
- * A shared edge between two chunks is open (has a road crossing) based on a
- * deterministic hash of the edge coordinate — both chunks always agree.
+ * Normalize a chunk side to the shared edge's own coordinate: horizontal
+ * edges keyed by the chunk below, vertical edges by the chunk to the right.
  */
-export function sideOpen(grid: Grid, cx: number, cy: number, side: Side): boolean {
-  // Normalize to the edge's own coordinate: horizontal edges keyed by the
-  // chunk above, vertical edges by the chunk to the left.
+export function edgeRef(grid: Grid, cx: number, cy: number, side: Side): EdgeRef {
   let ex = cx;
   let ey = cy;
   let vertical = 0;
@@ -31,9 +37,22 @@ export function sideOpen(grid: Grid, cx: number, cy: number, side: Side): boolea
     ex = cx + 1;
   }
   // Border edges of the grid stay closed so roads don't dead-end off-screen.
-  if (vertical === 0 && (ey === 0 || ey >= grid.rows)) return false;
-  if (vertical === 1 && (ex === 0 || ex >= grid.cols)) return false;
-  return hash2(ex * 2 + vertical, ey, grid.seed) < P_OPEN;
+  const border =
+    vertical === 0 ? ey === 0 || ey >= grid.rows : ex === 0 || ex >= grid.cols;
+  return { ex, ey, vertical, border, key: vertical + ':' + ex + ',' + ey };
+}
+
+/**
+ * A shared edge between two chunks is open (has a road crossing) based on a
+ * deterministic hash of the edge coordinate — both chunks always agree.
+ * Sandbox edits override the hash.
+ */
+export function sideOpen(grid: Grid, cx: number, cy: number, side: Side): boolean {
+  const e = edgeRef(grid, cx, cy, side);
+  if (e.border) return false;
+  const forced = grid.overrides.get(e.key);
+  if (forced !== undefined) return forced;
+  return hash2(e.ex * 2 + e.vertical, e.ey, grid.seed) < P_OPEN;
 }
 
 /** Jittered junction point near the chunk center — every block looks unique. */

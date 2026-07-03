@@ -23,6 +23,8 @@ export interface Grid {
   seed: number;
   chunks: Chunk[];
   churnTimer: number;
+  /** sandbox road edits: edge key → forced open/closed */
+  overrides: Map<string, boolean>;
 }
 
 const CHUNK_SIZE = 120;
@@ -51,7 +53,7 @@ export function createGrid(w: number, h: number, seed: number): Grid {
       });
     }
   }
-  return { cols, rows, size, seed, chunks, churnTimer: 3 };
+  return { cols, rows, size, seed, chunks, churnTimer: 3, overrides: new Map() };
 }
 
 export function chunkAt(grid: Grid, cx: number, cy: number): Chunk | null {
@@ -69,7 +71,12 @@ export function loadedCount(grid: Grid): number {
  * Advance streaming: timed initial load, then ambient churn — a random
  * loaded chunk (not protected) unloads and later streams back in.
  */
-export function updateChunks(grid: Grid, dt: number, isProtected: (c: Chunk) => boolean): void {
+export function updateChunks(
+  grid: Grid,
+  dt: number,
+  isProtected: (c: Chunk) => boolean,
+  churn = true,
+): void {
   for (const c of grid.chunks) {
     if (c.state === UNLOADED) {
       c.loadAt -= dt;
@@ -80,6 +87,7 @@ export function updateChunks(grid: Grid, dt: number, isProtected: (c: Chunk) => 
     }
   }
 
+  if (!churn) return;
   grid.churnTimer -= dt;
   if (grid.churnTimer <= 0) {
     grid.churnTimer = 2.5 + Math.random() * 2.5;

@@ -24,12 +24,14 @@ export function draw(
   pal: Palette,
   w: number,
   h: number,
+  bright = false,
 ): void {
+  const boost = bright ? 1.5 : 1;
   ctx.clearRect(0, 0, w, h);
 
   // Chunk outlines: unloaded = faint ghosts, loaded = settled grid.
   for (const c of grid.chunks) {
-    const alpha = c.state === UNLOADED ? 0.14 : 0.14 + 0.22 * c.t;
+    const alpha = Math.min(1, (c.state === UNLOADED ? 0.14 : 0.14 + 0.22 * c.t) * boost);
     ctx.strokeStyle = pal.line;
     ctx.globalAlpha = alpha;
     ctx.strokeRect(c.x0 + 1.5, c.y0 + 1.5, grid.size - 3, grid.size - 3);
@@ -41,7 +43,7 @@ export function draw(
   for (const c of grid.chunks) {
     if (c.state === UNLOADED || c.t <= 0) continue;
     ctx.strokeStyle = pal.line;
-    ctx.globalAlpha = 0.85 * c.t;
+    ctx.globalAlpha = Math.min(1, 0.85 * c.t * boost);
     for (const side of openSides(grid, c)) {
       const pts = sidePolyline(grid, c, side);
       ctx.beginPath();

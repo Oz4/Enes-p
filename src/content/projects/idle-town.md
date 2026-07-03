@@ -2,6 +2,7 @@
 title: 'Idle Town'
 studio: 'Solo project'
 period: '2017'
+art: '/media/idle-town-key-art.svg'
 summary: 'Asynchronous multiplayer Telegram game — 400K registered users, built solo before graduation.'
 tech:
   engine: '— (no game engine)'
