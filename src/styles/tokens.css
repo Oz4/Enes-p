@@ -5,23 +5,32 @@
 :root {
   /* Color — an open-world city at night, long-exposure light trails */
   --void: #060608;             /* base background, never pure black */
-  --surface: rgba(255, 255, 255, 0.03); /* glass panels */
+  /* Glass panel fill. Near-opaque near-black (≈ 3% white over --void):
+     it must mask the lit-edge border gradient everywhere except the 1px
+     ring, letting only ~8% of it ghost through as sheen. */
+  --surface: rgba(13, 13, 18, 0.92);
   --edge: rgba(255, 255, 255, 0.08);    /* hairline borders on glass */
   --ink: #f2f3f7;              /* primary text — high contrast, glow-free */
   --ink-dim: #8b90a0;          /* secondary text, labels */
-  --trail-amber: #ffb454;      /* light trails, primary CTA */
-  --trail-crimson: #ff3b5c;    /* taillights — rare accents only */
-  --neon-violet: #8b5cf6;      /* identity gradient + glows */
-  --neon-cyan: #22d3ee;        /* identity gradient + live readouts */
+  --trail-amber: #ffb454;      /* light trails, primary CTA — the one saturated UI element */
+  --neon-violet: #8b5cf6;      /* flat accent + scene rims */
+  --neon-cyan: #22d3ee;        /* live readouts + dispatch pulse only */
 
-  /* Identity gradient — display-type sheen, key edges */
+  /* Identity gradient — hero name sheen ONLY */
   --grad-identity: linear-gradient(90deg, var(--neon-violet), var(--neon-cyan));
-  /* Gradient hairline for glass borders */
+  /* "Lit edge" — the standard 1px border: dark glass catching light from
+     above-left, not a colored border. The only other allowed gradient. */
   --grad-edge: linear-gradient(
     135deg,
-    rgba(139, 92, 246, 0.35),
-    rgba(34, 211, 238, 0.18) 45%,
-    rgba(255, 255, 255, 0.06)
+    rgba(255, 255, 255, 0.38),
+    rgba(255, 255, 255, 0.06) 45%,
+    rgba(139, 92, 246, 0.18)
+  );
+  --grad-edge-lit: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.55),
+    rgba(255, 255, 255, 0.1) 45%,
+    rgba(139, 92, 246, 0.22)
   );
 
   /* Typography (unchanged from V1) */

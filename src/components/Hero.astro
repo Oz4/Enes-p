@@ -92,7 +92,6 @@ const chips = [
     font-size: var(--text-xs);
     letter-spacing: 0.05em;
     margin-bottom: var(--space-3);
-    text-shadow: 0 0 14px rgba(255, 180, 84, 0.35);
     text-transform: uppercase;
   }
 
@@ -182,7 +181,9 @@ const chips = [
   }
 
   .icon-link:hover {
-    box-shadow: 0 0 18px rgba(34, 211, 238, 0.25);
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      var(--grad-edge-lit) border-box;
     color: var(--ink);
   }
 

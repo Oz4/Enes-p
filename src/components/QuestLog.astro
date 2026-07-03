@@ -97,9 +97,8 @@ const entries = [
 
   /* Glowing route line — draws in when the section reveals */
   .route-line {
-    background: linear-gradient(180deg, var(--neon-violet), var(--neon-cyan));
+    background: rgba(139, 92, 246, 0.45);
     border-radius: 2px;
-    box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
     bottom: 0;
     left: 0;
     position: absolute;
@@ -139,9 +138,8 @@ const entries = [
   /* waypoint node on the route */
   ol > li::before {
     background: var(--void);
-    border: 1px solid var(--neon-cyan);
+    border: 1px solid rgba(139, 92, 246, 0.6);
     border-radius: 50%;
-    box-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
     content: '';
     height: 9px;
     left: calc(-1 * var(--space-5) - 4px);

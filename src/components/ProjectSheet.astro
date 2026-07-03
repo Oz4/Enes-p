@@ -277,7 +277,7 @@ const thumb = (id: string | undefined) =>
   }
 
   .close:hover {
-    box-shadow: 0 0 16px rgba(255, 59, 92, 0.3);
+    border-color: rgba(255, 255, 255, 0.4);
     color: var(--ink);
   }
 
@@ -370,10 +370,7 @@ const thumb = (id: string | undefined) =>
 
   .case :global(.prose h3),
   .sheet :global(.prose h3) {
-    background: var(--grad-identity);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
+    color: var(--neon-violet);
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     font-stretch: normal;

@@ -117,15 +117,12 @@ const branches = [
     border: 1px solid transparent;
     border-radius: var(--radius);
     padding: var(--space-3) var(--space-4);
-    transition: box-shadow 0.2s ease-out;
   }
 
   .branch:hover {
-    box-shadow: 0 0 24px rgba(139, 92, 246, 0.12);
-  }
-
-  .branch:nth-of-type(even):hover {
-    box-shadow: 0 0 24px rgba(34, 211, 238, 0.12);
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      var(--grad-edge-lit) border-box;
   }
 
   h3 {
