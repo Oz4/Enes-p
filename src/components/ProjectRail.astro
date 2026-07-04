@@ -110,22 +110,11 @@ const thumb = (id: string | undefined) =>
       rail.addEventListener(evt, markInteracted, { passive: true, once: false });
     }
 
-    // --- vertical wheel drives the rail while hovering it ---
-    rail.addEventListener(
-      'wheel',
-      (e) => {
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-          const atStart = rail!.scrollLeft <= 0 && e.deltaY < 0;
-          const atEnd =
-            rail!.scrollLeft >= rail!.scrollWidth - rail!.clientWidth - 1 && e.deltaY > 0;
-          if (!atStart && !atEnd) {
-            e.preventDefault();
-            rail!.scrollLeft += e.deltaY;
-          }
-        }
-      },
-      { passive: false },
-    );
+    // NOTE: no vertical-wheel hijack. Standard rail convention (Netflix/
+    // PS5-web style): vertical wheel always scrolls the PAGE, even over the
+    // rail; horizontal movement comes from native trackpad deltaX, drag,
+    // and arrow keys. A previous version converted deltaY into rail scroll
+    // and it made the page feel stuck whenever the cursor rested here.
 
     // --- mouse drag (touch scrolls natively) ---
     let dragStartX = 0;

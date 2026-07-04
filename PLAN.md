@@ -149,8 +149,9 @@ scroll-padding matching the page gutter, and padding-inline-end reserving
 Card 1 sits at the container's left content edge on load (scroll pinned to 0
 after fonts settle). The active (snapped) card scales to ~1.05 and plays its
 video muted; neighbors dim to 60%. Drag maps pointer delta to scrollLeft (no
-transforms, no clamps); wheel and arrow keys reach every card. Same four
-projects:
+transforms, no clamps); trackpad horizontal gestures and arrow keys reach
+every card. Vertical wheel is NEVER hijacked — it scrolls the page even when
+the cursor is over the rail (standard rail convention). Same four projects:
 1. **My Corp Cargo Simulator** (NocturnForge) — Lead / solo-shipped open-world sim, Steam.
 2. **Highstreet Market** — VR multiplayer physics & combat systems.
 3. **HG Idle Arcade Framework + HG Builder** — framework powering 10+ shipped mobile titles + CI/CD tooling.
