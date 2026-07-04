@@ -3,43 +3,50 @@ title: 'HG Idle Arcade Framework + HG Builder'
 studio: 'Hero Games'
 period: '2021–2023'
 art: '/media/hero-games-key-art.svg'
-summary: 'One framework powering 10+ shipped mobile titles, plus CI/CD tooling that saved 2+ hours daily.'
+summary: 'One framework behind 10+ mobile titles, plus Python CI/CD tooling that saved 2+ hours daily.'
 order: 3
-roleLine: 'Hero Games · Senior Engineer'
+roleLine: 'Hero Games · Senior Game Developer'
 chips: ['Unity', 'C#', 'CI/CD']
 trailer: '8X2kIfS6fb8'
 tech:
   engine: 'Unity'
-  language: 'C#'
+  language: 'C#, Python'
   networking: '—'
-  keyLibs: '[placeholder — DI container, key packages]'
+  keyLibs: 'Fastlane, ads/analytics/IAP SDKs'
   platform: 'Mobile (iOS / Android)'
-  teamSize: '[placeholder]'
-  role: 'Senior Engineer — framework & build tooling'
+  teamSize: 'Remote team — Istanbul'
+  role: 'Senior Game Developer — framework & build tooling'
 ---
-
-<!-- REVIEW(Enes): drafted from PLAN.md seeds — verify all specifics,
-     fill the [placeholder] fields, and add real numbers. -->
 
 ## What it is
 
-An internal Unity framework for idle-arcade mobile games, plus HG Builder, the
-CI/CD tooling around it. Together they took Hero Games from building each title
-from scratch to shipping 10+ different games on one foundation.
+A reusable Unity idle-arcade framework plus HG Builder, a Python-based CI/CD
+tool — together they carried 10+ arcade/idle games to production or soft launch
+at Hero Games (Nov 2021 – Jun 2023, remote).
 
 ## What I built
 
 ### Framework architecture
 
-- **The HG Idle Arcade Framework**: shared core systems — game loop, economy,
-  progression, common gameplay building blocks — assembled per title through
-  composition rather than inheritance.
-- **Modular assemblies** so each game pulls in only what it uses.
+- **The Idle Arcade Framework**: a reusable Unity foundation for rapid mobile
+  game development.
+- **Modular systems**: save/load, economy & progression, inventory, upgrades,
+  and offline/idle progression.
+- **Core gameplay loops** — rewards, timers, missions/events — with
+  config-driven balancing.
+- **Ads, analytics, and IAP-ready monetization**, supporting live ops and
+  A/B testing across the portfolio.
 
 ### Tools
 
-- **HG Builder**: build automation and CI/CD for the whole portfolio —
-  one-command builds instead of hand-maintained per-title pipelines.
+- **HG Builder**: Python-based CI/CD integrating Fastlane and Slack for
+  automated build & deployment workflows — saving 2+ hours daily and enabling
+  scalable multi-project releases.
+
+### R&D
+
+- Led development of an **AI-driven 3D conversational character**, integrating
+  OpenAI GPT models and Google Text-to-Speech.
 
 ## The hard part
 
@@ -52,8 +59,9 @@ just a folder of snippets.
 them — breaking changes had a real cost multiplied across every live title.
 
 **Solution.** A composition-first architecture: small, replaceable systems
-behind stable interfaces, wired per-title with dependency injection. Games
-override behavior by swapping parts, not by patching shared code.
+behind stable interfaces with config-driven balancing. Games override behavior
+by swapping parts, not by patching shared code — and HG Builder made releasing
+the whole portfolio a push-button operation.
 
-**Result.** 10+ titles shipped to production on the framework, and HG Builder's
-automation saved the team 2+ hours every day.
+**Result.** 10+ titles reached production or soft launch on the framework, and
+the build automation saved the team 2+ hours every day.

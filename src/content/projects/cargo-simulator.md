@@ -3,53 +3,55 @@ title: 'My Corp Cargo Simulator'
 studio: 'NocturnForge'
 period: '2025–2026'
 art: '/media/cargo-key-art.svg'
-summary: 'Open-world cargo simulator, designed, built, and shipped solo on Steam.'
+summary: 'Open-world cargo simulator, founded, built, and shipped solo on Steam.'
 order: 1
-roleLine: 'NocturnForge · Lead, solo-shipped on Steam'
+roleLine: 'NocturnForge · Founder & Lead, solo-shipped on Steam'
 chips: ['Unity', 'C#', 'Addressables']
 trailer: 'tCI396HyhbQ'
 tech:
   engine: 'Unity'
   language: 'C#'
   networking: '—'
-  keyLibs: 'Addressables'
+  keyLibs: 'Addressables, custom DI container'
   platform: 'PC (Steam)'
   teamSize: '1 — solo-shipped'
-  role: 'Lead: all systems, tools, and release'
+  role: 'Founder & Lead: all systems, tools, and release'
 ---
-
-<!-- REVIEW(Enes): technical narrative below is drafted from PLAN.md seeds.
-     Verify specifics — especially the precision/streaming solution details —
-     and add real numbers where they exist. -->
 
 ## What it is
 
-An open-world cargo simulator for PC, designed, built, and shipped solo on Steam
-under NocturnForge. A streaming world with a procedurally generated road network,
-where delivery vehicles pathfind between depots to keep cargo moving.
+An open-world cargo simulation game for PC, founded, built, and shipped solo on
+Steam under NocturnForge. A grid-based streaming world with procedural roads,
+where the delivery loop — packages, inventory, vehicles, characters — runs on
+fully data-driven systems.
 
 ## What I built
 
 ### Architecture
 
-- **ID-based entity system.** Gameplay entities are addressed by stable IDs rather
-  than object references, decoupling simulation data from loaded GameObjects. The
-  world stays consistent as chunks load and unload around the player.
-- **Data-oriented gameplay layer** on top of that entity system, keeping game logic
-  independent of Unity's scene lifecycle.
+- **Core → Systems → Gameplay layering** with composition-based design, and a
+  modular codebase structured with assembly definitions for long-term scalability.
+- **ID-based entity system** enabling decoupled, data-oriented gameplay: entities
+  are addressed by stable IDs rather than object references, so simulation state
+  stays consistent as the world streams in and out.
+- **Custom DI container**, logging, and data-driven configuration systems.
 
 ### World & performance
 
-- **Chunked world streaming** built on Addressables: chunks near the player load
-  fully, distant ones stream in and out on demand.
-- **Floating-point precision management** so physics and rendering stay stable at
-  open-world distances from the origin.
+- **Grid-based open-world streaming** built on Addressables, with floating-point
+  precision handling and chunking.
+- **CPU and rendering optimization**: batching, SetPass reduction, LODs,
+  lighting, and continuous profiling.
 
 ### Gameplay & AI
 
-- **Procedural road network generation** across the streamed world.
-- **Delivery agents** driven by finite state machines (Idle → Pickup → Deliver),
-  pathfinding along the road network between depots.
+- Core gameplay systems: **inventory, packages, delivery, character customization**.
+- **IK-driven interaction system** for dynamic hand placement and interaction.
+- **AI with FSM and Behavior Trees**, procedural roads, and navigation systems.
+
+### Tools
+
+- Editor tooling and config pipelines built for solo-scale iteration speed.
 
 ## The hard part
 
@@ -64,9 +66,9 @@ system had to work with Unity's lifecycle, not against it, and still ship.
 **Solution.** The ID-based entity system separates simulation state from the loaded
 representation. Entities exist as data whether or not their chunk is resident;
 GameObjects become disposable views that attach when a chunk streams in via
-Addressables and detach when it unloads. That same separation keeps positions
-manageable at world scale instead of relying on raw world-space floats.
+Addressables and detach when it unloads, with precision handled at the chunking
+layer instead of raw world-space floats.
 
 **Result.** The game shipped on Steam, built end-to-end by one engineer. The
-ambient simulation on this site — chunk streaming, procedural roads, delivery
-agents — is a toy version of these exact systems.
+ambient scene on this site — routes, streaming, deliveries — is a toy version of
+these exact systems.
