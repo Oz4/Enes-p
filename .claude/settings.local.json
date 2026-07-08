@@ -15,7 +15,17 @@
       "Bash(python3 -)",
       "Bash(pkill -f \"astro dev\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:4321/)",
-      "Bash(python3 -c ' *)"
+      "Bash(python3 -c ' *)",
+      "Bash(git stash *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" https://enes-portfolio-brown.vercel.app)",
+      "Bash(curl -s https://enes-portfolio-brown.vercel.app)",
+      "Bash(curl -s -o /dev/null -w \"prod: %{http_code}\\\\n\" https://enes-portfolio-brown.vercel.app)",
+      "Bash(python3 -m pip install --user --quiet pypdf)",
+      "Bash(cp \"/Users/aws/Downloads/Enes Sahin CV.pdf\" public/cv/Enes-Sahin-Unity-Engineer-CV.pdf && rm -f public/cv/.gitkeep && ls -la public/cv/)",
+      "Bash(curl -s -o /dev/null -w \"cv pdf: %{http_code} \\(%{size_download}b\\)\\\\n\" https://enes-portfolio-brown.vercel.app/cv/Enes-Sahin-Unity-Engineer-CV.pdf)",
+      "Bash(gh auth *)",
+      "Bash(git ls-remote *)",
+      "Bash(echo \"exit: $?\")"
     ]
   }
 }
